@@ -1,0 +1,8 @@
+{
+  "full_name": "Learning Equality",
+  "email": "info@learningequality.org",
+  "github_username": "learningequality",
+  "channel_name": "Channel",
+  "project_slug": "{{ cookiecutter.channel_name.lower().replace(' ', '-').replace('_', '-') }}-chef",
+  "chef_template": ["Sushi Chef", "Sous Chef"]
+}
