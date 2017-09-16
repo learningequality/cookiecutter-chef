@@ -1,4 +1,4 @@
-* {{ cookiecutter.project_name }} version:
+* {{ cookiecutter.channel_name }} chef version:
 * Python version:
 * Operating System:
 

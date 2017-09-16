@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-"""Top-level package for {{ cookiecutter.project_name }}."""
+"""Top-level package for {{ cookiecutter.channel_name }} chef."""
 
 __author__ = """{{ cookiecutter.full_name }}"""
 __email__ = '{{ cookiecutter.email }}'
-__version__ = '{{ cookiecutter.version }}'
+__version__ = '0.1.0'
