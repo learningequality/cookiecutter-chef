@@ -10,11 +10,11 @@ def remove_file(filepath):
 
 if __name__ == '__main__':
     if '{{cookiecutter.chef_template}}' != 'Sushi Chef':
-        remove_file('{{cookiecutter.project_slug}}/sushichef.py')
-        remove_file('examples/openstax-sushi-chef.py')
+        remove_file('{}{}{}'.format('{{cookiecutter.project_slug}}', os.path.sep, 'sushichef.py'))
+        remove_file('examples{}{}'.format(os.path.sep, 'openstax-sushi-chef.py'))
 
     if '{{cookiecutter.chef_template}}' != 'Sous Chef':
-        remove_file('{{cookiecutter.project_slug}}/souschef.py')
-        remove_file('utils/data_writer.py')
-        remove_file('utils/path_builder.py')
-        remove_file('examples/openstax-sous-chef.py')
+        remove_file('{}{}{}'.format('{{cookiecutter.project_slug}}', os.path.sep, 'souschef.py'))
+        remove_file('utils{}{}'.format(os.path.sep, 'data_writer.py'))
+        remove_file('utils{}{}'.format(os.path.sep, 'path_builder.py'))
+        remove_file('examples{}{}'.format(os.path.sep, 'openstax-sous-chef.py'))
