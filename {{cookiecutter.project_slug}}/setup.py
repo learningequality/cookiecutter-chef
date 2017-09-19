@@ -12,6 +12,7 @@ except (IOError, ImportError):
     readme = open('README.md').read()
 
 requirements = [
+    "le_utils>=0.1.2",
     {% if cookiecutter.chef_template == 'Sushi Chef' -%}
     "ricecooker>=0.6.4",
     {%- endif %}
