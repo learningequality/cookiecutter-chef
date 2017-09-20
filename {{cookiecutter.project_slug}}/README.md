@@ -215,7 +215,7 @@ js_content = read('https://example.com/loadpage', loadjs=True)  # Load js before
 {% elif cookiecutter.chef_template == 'Sushi Chef' -%}
 
 A sushi chef is responsible for scraping content from a source and using the
-[Ricecooker](https://github.com/learningequality/ricecooker) to upload a channel to Kolibri Studio.
+[Rice Cooker](https://github.com/learningequality/ricecooker) to upload a channel to Kolibri Studio.
 
 __\*\*\* A sushi chef has been started for you under {{cookiecutter.project_slug}}/sushichef.py \*\*\*__
 
