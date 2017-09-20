@@ -16,7 +16,8 @@ and csv structure (see example `{{cookiecutter.project_slug}}/examples/Sample Ch
 
 
 
-__A sous chef has been started for you under {{cookiecutter.project_slug}}/souschef.py__
+__\*\*\* A sous chef has been started for you under {{cookiecutter.project_slug}}/souschef.py \*\*\*__
+
 
 
 ## Using the DataWriter
@@ -216,7 +217,7 @@ js_content = read('https://example.com/loadpage', loadjs=True)  # Load js before
 A sushi chef is responsible for scraping content from a source and using the
 [Ricecooker](https://github.com/learningequality/ricecooker) to upload a channel to Kolibri Studio.
 
-__A sushi chef has been started for you under {{cookiecutter.project_slug}}/sushichef.py__
+__\*\*\* A sushi chef has been started for you under {{cookiecutter.project_slug}}/sushichef.py \*\*\*__
 
 
 
