@@ -1,43 +1,39 @@
 #!/usr/bin/env python
 
-# Import modules that will be required for web-scraping.
+import os
+import sys;
+sys.path.append(os.getcwd()) # Handle relative imports
+from utils import data_writer, path_builder, downloader
+from le_utils.constants import licenses
+
+
+
+""" Additional imports """
 ###########################################################
 import requests
-import os
-import sys
 import logging
-
-sys.path.append(os.path.dirname(os.getcwd()))
-
 from bs4 import BeautifulSoup
 from utils import data_writer, path_builder, downloader
 from le_utils.constants import licenses
 
 
-# Fill out the channel settings here.
+""" Run Constants"""
 ###########################################################
-CHANNEL_TITLE = 'Wikipedia'                # a humand-readbale title
-CHANNEL_DESCRIPTION = ''                   # description of this channel
-CHANNEL_DOMAIN = 'en.wikipedia.org'        # domain of this channel
-CHANNEL_SOURCE_ID = 'wikipedia'            # an alphanumeric ID refering to this channel
-CHANNEL_LANGUAGE = 'en'                    # language of channel
-CHANNEL_LICENSE = licenses.PUBLIC_DOMAIN   # Licenses used in this channel
+
+CHANNEL_NAME = 'Wikipedia'                 # Name of channel
+CHANNEL_SOURCE_ID = 'wikipedia'            # Channel's unique id
+CHANNEL_DOMAIN = 'en.wikipedia.org'        # Who is providing the content
+CHANNEL_LANGUAGE = 'en'                    # Language of channel
+CHANNEL_DESCRIPTION = ''                   # Description of the channel (optional)
 CHANNEL_THUMBNAIL = 'https://lh3.googleusercontent.com/' \
                     + 'zwwddqxgFlP14DlucvBV52RUMA-cV3vRvmjf' \
-                    + '-iWqxuVhYVmB-l8XN9NDirb0687DSw=w300'# link to the channel's thumbnail
+                    + '-iWqxuVhYVmB-l8XN9NDirb0687DSw=w300' # Local path or url to image file (optional)
+PATH = path_builder.PathBuilder(channel_name=CHANNEL_NAME)
+WRITE_TO_PATH = "{}{}{}.zip".format(os.path.dirname(os.path.realpath(__file__)), os.path.sep, CHANNEL_NAME) # Where to generate zip file
 
 
-# Fill out the Sous Chef settings here. 
-###########################################################
-CHANNEL_CSV_FILENAME = 'Channel.csv'
-CHANNEL_SETTINGS = ['Title', 'Description', 'Domain', 'Source ID', 'Language', 'License ID', 'Thumbnail']
-CONTENT_CSV_FILENAME = 'Content.csv'
-CONTENT_SETTINGS = ['Path', 'Title', 'Description', 'Author', 'Language', 'License ID', 'License Description', 'Copyright Holder', 'Thumbnail']
-PATH = path_builder.PathBuilder(channel_name=CHANNEL_TITLE)
-ZIP_PATH = "{}{}{}.zip".format(os.path.dirname(os.path.realpath(__file__)), os.path.sep, CHANNEL_TITLE)
 
-
-# Logger settings
+""" Additional Constants """
 ###########################################################
 LOGGER = logging.getLogger()
 __logging_handler = logging.StreamHandler()
@@ -45,7 +41,27 @@ LOGGER.addHandler(__logging_handler)
 LOGGER.setLevel(logging.INFO)
 
 
-# Helper functions for web-scraping
+""" Main Scraping Method """
+###########################################################
+def scrape_source(writer):
+    PATH.set()
+    LOGGER.info('Parsing HTML from {}...'.format('https://en.wikipedia.org/wiki'))
+
+    PATH.push('Citrus!')
+    LOGGER.info('   Writing {} resources...'.format('Citrus!'))
+    citrus_details = add_subpages_from_wikipedia_list(writer, 'https://en.wikipedia.org/wiki/List_of_citrus_fruits')
+    writer.add_folder(str(PATH), 'Citrus!', **citrus_details)
+    PATH.pop()
+
+    PATH.push('Potatoes!')
+    LOGGER.info('   Writing {} resources...'.format('Potatoes!'))
+    potatoes_details = add_subpages_from_wikipedia_list(writer, "https://en.wikipedia.org/wiki/List_of_potato_cultivars")
+    writer.add_folder(str(PATH), 'Potatoes!', **potatoes_details)
+    PATH.pop()
+
+
+
+""" Helper Methods """
 ###########################################################
 def make_fully_qualified_url(url):
     if url.startswith("//"):
@@ -70,25 +86,6 @@ def download_wikipedia_page(url, thumbnail, title):
     }
 
     return details
-
-
-# Start scraping the website
-###########################################################
-def scrape_source(writer):
-    PATH.set()
-    LOGGER.info('Parsing HTML from {}...'.format('https://en.wikipedia.org/wiki'))
-
-    PATH.push('Citrus!')
-    LOGGER.info('   Writing {} resources...'.format('Citrus!'))
-    citrus_details = add_subpages_from_wikipedia_list(writer, 'https://en.wikipedia.org/wiki/List_of_citrus_fruits')
-    writer.add_folder(str(PATH), 'Citrus!', **citrus_details)
-    PATH.pop()
-    
-    PATH.push('Potatoes!')
-    LOGGER.info('   Writing {} resources...'.format('Potatoes!'))
-    potatoes_details = add_subpages_from_wikipedia_list(writer, "https://en.wikipedia.org/wiki/List_of_potato_cultivars")
-    writer.add_folder(str(PATH), 'Potatoes!', **potatoes_details)
-    PATH.pop()
 
 
 def add_subpages_from_wikipedia_list(writer, list_url):
@@ -141,12 +138,15 @@ def add_subpages_from_wikipedia_list(writer, list_url):
     return folder_details
 
 
-# Main function to create the Sous Chef
-###########################################################
+""" This code will run when the sous chef is called from the command line. """
 if __name__ == '__main__':
     with data_writer.DataWriter(write_to_path=ZIP_PATH) as writer:
-        writer.add_channel(CHANNEL_TITLE, CHANNEL_SOURCE_ID, CHANNEL_DOMAIN, 
-            CHANNEL_LANGUAGE, CHANNEL_DESCRIPTION, CHANNEL_THUMBNAIL)
+
+         # Write channel details to spreadsheet
+        thumbnail = writer.add_file(str(PATH), "Channel Thumbnail", CHANNEL_THUMBNAIL, write_data=False)
+        writer.add_channel(CHANNEL_NAME, CHANNEL_SOURCE_ID, CHANNEL_DOMAIN, CHANNEL_LANGUAGE, description=CHANNEL_DESCRIPTION, thumbnail=thumbnail)
+
+        # Scrape source content
         scrape_source(writer)
 
-        LOGGER.info("\n\nDONE: Zip created at {}\n".format(ZIP_PATH))
+        sys.stdout.write("\n\nDONE: Zip created at {}\n".format(writer.write_to_path))

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import shutil
 
 PROJECT_DIRECTORY = os.path.realpath(os.path.curdir)
 
@@ -18,3 +19,5 @@ if __name__ == '__main__':
         remove_file('utils{}{}'.format(os.path.sep, 'data_writer.py'))
         remove_file('utils{}{}'.format(os.path.sep, 'path_builder.py'))
         remove_file('examples{}{}'.format(os.path.sep, 'openstax-sous-chef.py'))
+        shutil.rmtree('examples{}templates'.format(os.path.sep))
+        remove_file('examples{}{}'.format(os.path.sep, 'Sample Channel.zip'))
