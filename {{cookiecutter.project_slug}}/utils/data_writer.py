@@ -128,7 +128,7 @@ class DataWriter():
         writer.writerow([title, description, domain, source_id, language, thumbnail])
         self.zf.writestr('Channel.csv', string_buffer.getvalue())
 
-    def add_folder(self, path, title, description=None, language=None, thumbnail=None, **node_data):
+    def add_folder(self, path, title, description=None, language=None, thumbnail=None, source_id=None **node_data):
         """ add_folder: Creates folder in csv
             Args:
                 path: (str) where in zip to write folder
@@ -141,9 +141,9 @@ class DataWriter():
         """
         self._parse_path(path)
         path = path if path.endswith(title) else "{}/{}".format(path, title)
-        self._commit(path, title, description=description, language=language, thumbnail=thumbnail)
+        self._commit(path, title, description=description, language=language, thumbnail=thumbnail, source_id=source_id)
 
-    def add_file(self, path, title, download_url, write_data=True, license=None, **node_data):
+    def add_file(self, path, title, download_url, write_data=True, license=None, copyright_holder=None, **node_data):
         """ read: Creates file in csv and writes file to zip
             Args:
                 path: (str) where in zip to write file
@@ -160,7 +160,8 @@ class DataWriter():
                 thumbnail (str):  path to thumbnail in zip (optional)
             Returns: path to file in zip
         """
-        assert license, "Files must have a license"
+        assert not write_data or license, "Files must have a license"
+        assert license == licenses.PUBLIC_DOMAIN or copyright_holder, "Licenses must have a copyright holder if they are not public domain"
 
         self._parse_path(path)
         _name, ext = os.path.splitext(download_url or "")

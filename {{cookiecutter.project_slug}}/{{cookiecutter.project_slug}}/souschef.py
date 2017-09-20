@@ -50,3 +50,5 @@ if __name__ == '__main__':
 
         # Scrape source content
         scrape_source(writer)
+
+        sys.stdout.write("\n\nDONE: Zip created at {}\n".format(writer.write_to_path))

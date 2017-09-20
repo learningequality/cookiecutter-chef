@@ -46,4 +46,5 @@ class PathBuilder:
             Args: None
             Returns: last item in path
         """
-        return self.path.pop()
+        if len(self.path) > 1:
+            return self.path.pop()
