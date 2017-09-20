@@ -8,7 +8,17 @@ Chef for {{cookiecutter.channel_name}}
 
 * Run `pip install -e .`
 
+## Description
 {% if cookiecutter.chef_template == 'Sous Chef' -%}
+
+A sous chef is responsible for scraping content from a source and putting it into a folder
+and csv structure (see example `{{cookiecutter.project_slug}}/examples/Sample Channel.zip`)
+
+
+
+** A sous chef has been started for you under {{cookiecutter.project_slug}}/souschef.py **
+
+
 ## Using the DataWriter
 
 The DataWriter (utils.data_writer.DataWriter) is a tool for creating channel .zip files in a
@@ -203,6 +213,13 @@ js_content = read('https://example.com/loadpage', loadjs=True)  # Load js before
 
 {% elif cookiecutter.chef_template == 'Sushi Chef' -%}
 
+A sushi chef is responsible for scraping content from a source and using the
+[Ricecooker](https://github.com/learningequality/ricecooker) to upload a channel to Kolibri Studio.
+
+** A sushi chef has been started for you under {{cookiecutter.project_slug}}/sushichef.py **
+
+
+
 ## Using the Rice Cooker
 
 The rice cooker is a framework you can use to translate content into Kolibri-compatible objects.
@@ -290,7 +307,7 @@ class MySushiChef(SushiChef):
 ```
 
 You can now run of you chef by creating an instance of the chef class and calling
-it's `run` method:
+its `run` method:
 
 
 ```
@@ -481,21 +498,21 @@ Once you have created the appropriate question object, add it to an exercise obj
 ### Step 5: Running your chef script ###
 
 Your sushi chef scripts will run as standalone command line application
-`mychef.py` which you can call from the command line.
+`/sushichef.py` which you can call from the command line.
 
-To make the script file `mychef.py` a command line program, you need to do three things:
+To make the script file `sushichef.py` a command line program, you need to do three things:
 
-  - Add the line `#!/usr/bin/env python` as the first line of `mychef.py`
-  - Add this code block at the bottom of `mychef.py`:
+  - Add the line `#!/usr/bin/env python` as the first line of `sushichef.py`
+  - Add this code block at the bottom of `sushichef.py`:
 
         if __name__ == '__main__':
             chef = MySushiChef()
             chef.main()
 
-  - Make the file `mychef.py` executable by running `chmod +x mychef.py` on the
+  - Make the file `sushichef.py` executable by running `chmod +x sushichef.py` on the
     command line.
 
-The final chef script file `mychef.py` should look like this:
+The final chef script file `sushichef.py` should look like this:
 
     #!/usr/bin/env python
     ...
@@ -513,11 +530,11 @@ The final chef script file `mychef.py` should look like this:
 
 You can now call the script by passing the appropriate command line arguments:
 
-    ./mychef.py -v --token=YOURTOKENHERE9139139f3a23232 --reset
+    ./sushichef.py -v --token=YOURTOKENHERE9139139f3a23232 --reset
 
 To see the help menu, type
 
-    ./mychef.py -h
+    ./sushichef.py -h
 
 Here the full list of the supported command line args:
 

@@ -64,5 +64,5 @@ target/
 # Ricecooker generated files
 storage/*
 .ricecookerfilecache/*
-examples/*
 restore/*
+ghostdriver.log
