@@ -9,6 +9,7 @@ from ricecooker.classes import nodes, files
 from ricecooker.exceptions import raise_for_invalid_channel
 
 """ Additional imports """
+###########################################################
 import logging
 import json
 from le_utils.constants import licenses, file_formats
@@ -17,6 +18,7 @@ from selenium import webdriver
 
 
 """ Run Constants"""
+###########################################################
 
 CHANNEL_NAME = "Open Stax"              # Name of channel
 CHANNEL_SOURCE_ID = "open-stax"         # Channel's unique id
@@ -26,6 +28,7 @@ CHANNEL_DESCRIPTION = None              # Description of the channel (optional)
 CHANNEL_THUMBNAIL = "https://pbs.twimg.com/profile_images/461533721493897216/Q-kxGJ-b_400x400.png" # Local path or url to image file (optional)
 
 """ Additional Constants """
+###########################################################
 
 BASE_URL = "https://openstax.org/api"
 DOWNLOAD_DIRECTORY = "{}{}{}".format(os.path.dirname(os.path.realpath(__file__)), os.path.sep, "downloads")
@@ -61,6 +64,7 @@ class MyChef(SushiChef):
     }
 
     """ Main scraping method """
+    ###########################################################
 
     def construct_channel(self, *args, **kwargs):
         """ construct_channel: Creates ChannelNode and build topic tree
@@ -132,6 +136,7 @@ class MyChef(SushiChef):
 
 
 """ Helper Methods """
+###########################################################
 
 def read_source(endpoint="books"):
     """ Reads page source using downloader class to get json data """

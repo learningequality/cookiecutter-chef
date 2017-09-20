@@ -3,8 +3,10 @@ import os
 import zipfile
 from io import StringIO
 from utils.downloader import read
+from le_utils.constants import licenses
 
 DEFAULT_WRITE_TO_PATH = "Channel.zip"
+NO_COPYRIGHT_HOLDER_REQUIRED = [licenses.PUBLIC_DOMAIN]
 
 class DataWriter():
     """
@@ -128,7 +130,7 @@ class DataWriter():
         writer.writerow([title, description, domain, source_id, language, thumbnail])
         self.zf.writestr('Channel.csv', string_buffer.getvalue())
 
-    def add_folder(self, path, title, description=None, language=None, thumbnail=None, source_id=None **node_data):
+    def add_folder(self, path, title, description=None, language=None, thumbnail=None, source_id=None, **node_data):
         """ add_folder: Creates folder in csv
             Args:
                 path: (str) where in zip to write folder
@@ -161,7 +163,7 @@ class DataWriter():
             Returns: path to file in zip
         """
         assert not write_data or license, "Files must have a license"
-        assert license == licenses.PUBLIC_DOMAIN or copyright_holder, "Licenses must have a copyright holder if they are not public domain"
+        assert not write_data or license in NO_COPYRIGHT_HOLDER_REQUIRED or copyright_holder, "Licenses must have a copyright holder if they are not public domain"
 
         self._parse_path(path)
         _name, ext = os.path.splitext(download_url or "")

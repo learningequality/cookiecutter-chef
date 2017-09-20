@@ -7,6 +7,7 @@ from utils import data_writer, path_builder, downloader
 
 
 """ Additional imports """
+###########################################################
 import logging
 import json
 import tempfile
@@ -15,6 +16,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 
 """ Run Constants"""
+###########################################################
 
 CHANNEL_NAME = "Open Stax"              # Name of channel
 CHANNEL_SOURCE_ID = "open-stax"         # Channel's unique id
@@ -27,6 +29,7 @@ PATH = path_builder.PathBuilder(channel_name=CHANNEL_NAME)          # Keeps trac
 WRITE_TO_PATH = "{}{}{}.zip".format(os.path.dirname(os.path.realpath(__file__)), os.path.sep, CHANNEL_NAME) # Where to generate zip file
 
 """ Additional Constants """
+###########################################################
 
 BASE_URL = "https://openstax.org/api"
 
@@ -45,6 +48,7 @@ LOGGER.setLevel(logging.INFO)
 
 
 """ Main scraping method """
+###########################################################
 def scrape_source(writer):
     """ scrape_source: Scrapes channel page and writes to a DataWriter
         Args: writer (DataWriter): class that writes data to folder/csv structure
@@ -92,6 +96,7 @@ def scrape_source(writer):
 
 
 """ Helper Methods """
+###########################################################
 
 def read_source(endpoint="books"):
     """ Reads page source using downloader class to get json data """

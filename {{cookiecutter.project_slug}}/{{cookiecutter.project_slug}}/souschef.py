@@ -7,9 +7,11 @@ from le_utils.constants import licenses, exercises, content_kinds, file_formats,
 
 
 """ Additional imports """
+###########################################################
 
 
 """ Run Constants"""
+###########################################################
 
 CHANNEL_NAME = "{{cookiecutter.channel_name}}"              # Name of channel
 CHANNEL_SOURCE_ID = "{{cookiecutter.github_username}}"      # Channel's unique id
@@ -22,9 +24,11 @@ WRITE_TO_PATH = "{}{}{}.zip".format(os.path.dirname(os.path.realpath(__file__)),
 
 
 """ Additional Constants """
+###########################################################
 
 
 """ Main Scraping Method """
+###########################################################
 def scrape_source(writer):
 	""" scrape_source: Scrapes channel page and writes to a DataWriter
         Args: writer (DataWriter): class that writes data to folder/spreadsheet structure
@@ -36,6 +40,7 @@ def scrape_source(writer):
 
 
 """ Helper Methods """
+###########################################################
 
 
 """ This code will run when the sous chef is called from the command line. """

@@ -10,9 +10,11 @@ from le_utils.constants import licenses, exercises, content_kinds, file_formats,
 
 
 """ Additional imports """
+###########################################################
 
 
 """ Run Constants"""
+###########################################################
 
 CHANNEL_NAME = "{{cookiecutter.channel_name}}"              # Name of channel
 CHANNEL_SOURCE_ID = "{{cookiecutter.github_username}}"      # Channel's unique id
@@ -23,7 +25,7 @@ CHANNEL_THUMBNAIL = None                                    # Local path or url 
 
 
 """ Additional Constants """
-
+###########################################################
 
 """ The chef class that takes care of uploading channel to the content curation server. """
 class MyChef(SushiChef):
@@ -39,6 +41,7 @@ class MyChef(SushiChef):
 
 
     """ Main scraping method """
+    ###########################################################
 
     def construct_channel(self, *args, **kwargs):
         """ construct_channel: Creates ChannelNode and build topic tree
@@ -55,6 +58,7 @@ class MyChef(SushiChef):
 
 
 """ Helper Methods """
+###########################################################
 
 
 """ This code will run when the sushi chef is called from the command line. """
