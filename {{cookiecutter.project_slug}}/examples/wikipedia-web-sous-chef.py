@@ -10,7 +10,6 @@ from le_utils.constants import licenses
 
 """ Additional imports """
 ###########################################################
-import requests
 import logging
 from bs4 import BeautifulSoup
 from utils import data_writer, path_builder, downloader
