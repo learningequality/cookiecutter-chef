@@ -1,52 +1,32 @@
 #!/usr/bin/env python
-
-# Import modules that will be required for web-scraping.
-###########################################################
-import requests
-import os
-import sys
-import logging
-
-sys.path.append(os.path.dirname(os.getcwd()))
-
 from bs4 import BeautifulSoup
-from utils import data_writer, path_builder, downloader
-from le_utils.constants import licenses
+import requests
+import tempfile
+
+from ricecooker.chefs import SushiChef
+from ricecooker.classes import licenses
+from ricecooker.classes.files import HTMLZipFile, ThumbnailFile
+from ricecooker.classes.nodes import ChannelNode, HTML5AppNode, TopicNode
+from ricecooker.utils.caching import CacheForeverHeuristic, FileCache, CacheControlAdapter, InvalidatingCacheControlAdapter
+from ricecooker.utils.html import download_file
+from ricecooker.utils.zip import create_predictable_zip
 
 
-# Fill out the channel settings here.
-###########################################################
-CHANNEL_TITLE = 'Wikipedia'                # a humand-readbale title
-CHANNEL_DESCRIPTION = ''                   # description of this channel
-CHANNEL_DOMAIN = 'en.wikipedia.org'        # domain of this channel
-CHANNEL_SOURCE_ID = 'wikipedia'            # an alphanumeric ID refering to this channel
-CHANNEL_LANGUAGE = 'en'                    # language of channel
-CHANNEL_LICENSE = licenses.PUBLIC_DOMAIN   # Licenses used in this channel
-CHANNEL_THUMBNAIL = 'https://lh3.googleusercontent.com/' \
-                    + 'zwwddqxgFlP14DlucvBV52RUMA-cV3vRvmjf' \
-                    + '-iWqxuVhYVmB-l8XN9NDirb0687DSw=w300'# link to the channel's thumbnail
+# CHANNEL SETTINGS
+SOURCE_DOMAIN = "<yourdomain.org>" #
+SOURCE_ID = "<yourid>"             # an alphanumeric ID refering to this channel
+CHANNEL_TITLE = "<channeltitle>"   # a humand-readbale title
+CHANNEL_LANGUAGE = "en"            # language of channel
 
 
-# Fill out the Sous Chef settings here. 
-###########################################################
-CHANNEL_CSV_FILENAME = 'Channel.csv'
-CHANNEL_SETTINGS = ['Title', 'Description', 'Domain', 'Source ID', 'Language', 'License ID', 'Thumbnail']
-CONTENT_CSV_FILENAME = 'Content.csv'
-CONTENT_SETTINGS = ['Path', 'Title', 'Description', 'Author', 'Language', 'License ID', 'License Description', 'Copyright Holder', 'Thumbnail']
-PATH = path_builder.PathBuilder(channel_name=CHANNEL_TITLE)
-ZIP_PATH = "{}{}{}.zip".format(os.path.dirname(os.path.realpath(__file__)), os.path.sep, CHANNEL_TITLE)
+sess = requests.Session()
+cache = FileCache('.webcache')
+basic_adapter = CacheControlAdapter(cache=cache)
+forever_adapter= CacheControlAdapter(heuristic=CacheForeverHeuristic(), cache=cache)
 
+sess.mount('http://', forever_adapter)
+sess.mount('https://', forever_adapter)
 
-# Logger settings
-###########################################################
-LOGGER = logging.getLogger()
-__logging_handler = logging.StreamHandler()
-LOGGER.addHandler(__logging_handler)
-LOGGER.setLevel(logging.INFO)
-
-
-# Helper functions for web-scraping
-###########################################################
 def make_fully_qualified_url(url):
     if url.startswith("//"):
         return "https:" + url
@@ -55,43 +35,50 @@ def make_fully_qualified_url(url):
     assert url.startswith("http"), "Bad URL (relative to unknown location): " + url
     return url
 
+def make_request(url, *args, **kwargs):
+    response = sess.get(url, *args, **kwargs)
+    if response.status_code != 200:
+        print("NOT FOUND:", url)
+    elif not response.from_cache:
+        print("NOT CACHED:", url)
+    return response
 
-def get_parsed_html_from_url(url):
-    html = downloader.read(url)
-    return BeautifulSoup(html, 'html.parser')
-
-
-def download_wikipedia_page(url, thumbnail, title):
-    # Generate details of a single page
-    details = {
-        'thumbnail': thumbnail,
-        'source_id': url.split("/")[-1],
-        'license': CHANNEL_LICENSE,
-    }
-
-    return details
+def get_parsed_html_from_url(url, *args, **kwargs):
+    html = make_request(url, *args, **kwargs).content
+    return BeautifulSoup(html, "html.parser")
 
 
-# Start scraping the website
-###########################################################
-def scrape_source(writer):
-    PATH.set()
-    LOGGER.info('Parsing HTML from {}...'.format('https://en.wikipedia.org/wiki'))
 
-    PATH.push('Citrus!')
-    LOGGER.info('   Writing {} resources...'.format('Citrus!'))
-    citrus_details = add_subpages_from_wikipedia_list(writer, 'https://en.wikipedia.org/wiki/List_of_citrus_fruits')
-    writer.add_folder(str(PATH), 'Citrus!', **citrus_details)
-    PATH.pop()
-    
-    PATH.push('Potatoes!')
-    LOGGER.info('   Writing {} resources...'.format('Potatoes!'))
-    potatoes_details = add_subpages_from_wikipedia_list(writer, "https://en.wikipedia.org/wiki/List_of_potato_cultivars")
-    writer.add_folder(str(PATH), 'Potatoes!', **potatoes_details)
-    PATH.pop()
+class WikipediaChef(SushiChef):
+
+    def get_channel(self, *args, **kwargs):
+
+        channel = ChannelNode(
+            source_domain=SOURCE_DOMAIN,
+            source_id=SOURCE_ID,
+            title=CHANNEL_TITLE,
+            thumbnail="https://lh3.googleusercontent.com/zwwddqxgFlP14DlucvBV52RUMA-cV3vRvmjf-iWqxuVhYVmB-l8XN9NDirb0687DSw=w300",
+            language=CHANNEL_LANGUAGE,
+        )
+
+        return channel
+
+    def construct_channel(self, *args, **kwargs):
+
+        channel = self.get_channel(**kwargs)
+        citrus_topic = TopicNode(source_id="List_of_citrus_fruits", title="Citrus!")
+        channel.add_child(citrus_topic)
+        add_subpages_from_wikipedia_list(citrus_topic, "https://en.wikipedia.org/wiki/List_of_citrus_fruits")
+
+        potato_topic = TopicNode(source_id="List_of_potato_cultivars", title="Potatoes!")
+        channel.add_child(potato_topic)
+        add_subpages_from_wikipedia_list(potato_topic, "https://en.wikipedia.org/wiki/List_of_potato_cultivars")
+
+        return channel
 
 
-def add_subpages_from_wikipedia_list(writer, list_url):
+
+def add_subpages_from_wikipedia_list(topic, list_url):
 
     # to understand how the following parsing works, look at:
     #   1. the source of the page (e.g. https://en.wikipedia.org/wiki/List_of_citrus_fruits), or inspect in chrome dev tools
@@ -99,8 +86,6 @@ def add_subpages_from_wikipedia_list(writer, list_url):
 
     # parse the the page into BeautifulSoup format, so we can loop through and manipulate it
     page = get_parsed_html_from_url(list_url)
-
-    folder_details = {}
 
     # extract the main table from the page
     table = page.find("table")
@@ -126,27 +111,64 @@ def add_subpages_from_wikipedia_list(writer, list_url):
         url = make_fully_qualified_url(link["href"])
         title = link.text
 
-        LOGGER.info("      Writing {} resources...".format(title))
-
         # attempt to extract a thumbnail for the subpage, from the second column in the table
         image = columns[1].find("img")
         thumbnail_url = make_fully_qualified_url(image["src"]) if image else None
         if thumbnail_url and not (thumbnail_url.endswith("jpg") or thumbnail_url.endswith("png")):
             thumbnail_url = None
 
-        # download the wikipedia page and add file in the path
-        details = download_wikipedia_page(url, thumbnail=thumbnail_url, title=title)
-        writer.add_file(str(PATH), title, url, **details)
+        # download the wikipedia page into an HTML5 app node
+        html5app = download_wikipedia_page(url, thumbnail=thumbnail_url, title=title)
 
-    return folder_details
+        # add the downloaded HTML5 app node into the topic
+        topic.add_child(html5app)
 
 
-# Main function to create the Sous Chef
-###########################################################
+def download_wikipedia_page(url, thumbnail, title):
+
+    # create a temp directory to house our downloaded files
+    destpath = tempfile.mkdtemp()
+
+    # downlod the main wikipedia page, apply a middleware processor, and call it index.html
+    localref, _ = download_file(
+        url,
+        destpath,
+        filename="index.html",
+        middleware_callbacks=process_wikipedia_page,
+        request_fn=make_request,
+    )
+
+    # turn the temp folder into a zip file
+    zippath = create_predictable_zip(destpath)
+
+    # create an HTML5 app node
+    html5app = HTML5AppNode(
+        files=[HTMLZipFile(zippath)],
+        title=title,
+        thumbnail=thumbnail,
+        source_id=url.split("/")[-1],
+        license=licenses.PublicDomainLicense(),
+    )
+
+    return html5app
+
+
+def process_wikipedia_page(content, baseurl, destpath, **kwargs):
+
+    page = BeautifulSoup(content, "html.parser")
+
+    for image in page.find_all("img"):
+        relpath, _ = download_file(make_fully_qualified_url(image["src"]), destpath, request_fn=make_request)
+        image["src"] = relpath
+
+    return str(page)
+
+
+
 if __name__ == '__main__':
-    with data_writer.DataWriter(write_to_path=ZIP_PATH) as writer:
-        writer.add_channel(CHANNEL_TITLE, CHANNEL_SOURCE_ID, CHANNEL_DOMAIN, 
-            CHANNEL_LANGUAGE, CHANNEL_DESCRIPTION, CHANNEL_THUMBNAIL)
-        scrape_source(writer)
-
-        LOGGER.info("\n\nDONE: Zip created at {}\n".format(ZIP_PATH))
+    """
+    Call this script using:
+        ./wikipedia_chef.py -v --token=<t> --reset
+    """
+    wikichef = WikipediaChef()
+    wikichef.main()
