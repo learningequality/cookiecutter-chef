@@ -4,6 +4,6 @@
   "github_username": "learningequality",
   "channel_name": "Channel",
   "chef_template": ["Sushi Chef", "Sous Chef"],
-  "project_slug": "{{ cookiecutter.channel_name.lower().replace(' ', '-').replace('_', '-') }}-{% if cookiecutter.chef_template == 'Sous Chef' -%}sous{% elif cookiecutter.chef_template == 'Sushi Chef' -%}sushi{%- endif %}-chef",
+  "project_slug": "{% if cookiecutter.chef_template == 'Sous Chef' -%}sous{% elif cookiecutter.chef_template == 'Sushi Chef' -%}sushi{%- endif %}-chef-{{ cookiecutter.channel_name.lower().replace(' ', '-').replace('_', '-') }}",
   "channel_language": "en"
 }
