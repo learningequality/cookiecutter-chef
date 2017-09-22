@@ -18,8 +18,8 @@ from selenium import webdriver
 """ Run Constants"""
 ###########################################################
 
-CHANNEL_NAME = "Open Stax"              # Name of channel
-CHANNEL_SOURCE_ID = "open-stax-sous"    # Channel's unique id
+CHANNEL_NAME = "Example Open Stax"      # Name of channel
+CHANNEL_SOURCE_ID = "souschef-example-{{cookiecutter.github_username}}" # Channel's unique id
 CHANNEL_DOMAIN = "openstax.org"         # Who is providing the content
 CHANNEL_LANGUAGE = "en"                 # Language of channel
 CHANNEL_DESCRIPTION = None              # Description of the channel (optional)

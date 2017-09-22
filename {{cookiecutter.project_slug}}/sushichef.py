@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os
-import sys;
+import sys
 sys.path.append(os.getcwd()) # Handle relative imports
 from utils import downloader
 from ricecooker.chefs import SushiChef
@@ -50,7 +50,7 @@ class MyChef(SushiChef):
         channel = self.get_channel(*args, **kwargs)   # Creates ChannelNode from data in self.channel_info
 
         # TODO: Replace line with scraping code
-        raise ImplementationError("Scraping method not implemented")
+        raise NotImplementedError("Scraping method not implemented")
 
         raise_for_invalid_channel(channel)            # Check for errors in channel construction
 

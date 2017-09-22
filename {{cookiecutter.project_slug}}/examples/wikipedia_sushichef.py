@@ -23,8 +23,8 @@ from ricecooker.utils.zip import create_predictable_zip
 """ Run Constants"""
 ###########################################################
 
-CHANNEL_NAME = "Wikipedia"                                  # Name of channel
-CHANNEL_SOURCE_ID = "wikipedia-sushi"                       # Channel's unique id
+CHANNEL_NAME = "Example Wikipedia"                          # Name of channel
+CHANNEL_SOURCE_ID = "sushichef-example-{{cookiecutter.github_username}}" # Channel's unique id
 CHANNEL_DOMAIN = "en.wikipedia.org"                         # Who is providing the content
 CHANNEL_LANGUAGE = "en"                                     # Language of channel
 CHANNEL_DESCRIPTION = None                                  # Description of the channel (optional)
@@ -139,7 +139,7 @@ def process_wikipedia_page(content, baseurl, destpath, **kwargs):
                 link["href"], _ = download_file(make_fully_qualified_url(link['href']), destpath, subpath=subpath)
                 index = index + 1
             except Exception:
-                pass
+                link["href"] = "#"
 
     # Add images to zip file
     for image in page.find_all("img"):
@@ -147,7 +147,7 @@ def process_wikipedia_page(content, baseurl, destpath, **kwargs):
             relpath, _ = download_file(make_fully_qualified_url(image["src"]), destpath)
             image["src"] = relpath
         except Exception:
-            pass
+            image["src"] = "#"
 
     # Replace links with text to avoid broken links
     content = str(page)

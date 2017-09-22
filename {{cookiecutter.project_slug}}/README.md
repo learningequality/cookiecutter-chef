@@ -6,7 +6,7 @@ Chef for {{cookiecutter.channel_name}}
 
 * [Install pip](https://pypi.python.org/pypi/pip) if you don't have it already.
 
-* Run `pip install -e .`
+* Run `pip install -r requirements.txt`
 
 ## Description
 {% if cookiecutter.chef_template == 'Sous Chef' -%}
@@ -213,7 +213,7 @@ js_content = read('https://example.com/loadpage', loadjs=True)  # Load js before
 
 
 
-_For more examples, see `examples/openstax-sous-chef.py` (json) and `examples/wikipedia-sous-chef.py` (html)_
+_For more examples, see `examples/openstax_souschef.py` (json) and `examples/wikipedia_souschef.py` (html)_
 
 
 {% elif cookiecutter.chef_template == 'Sushi Chef' -%}
@@ -544,5 +544,5 @@ To see the help menu, type
 
 _For more Ricecooker run details, see [README](https://github.com/learningequality/ricecooker/blob/master/README.md)_
 
-_For more sushi chef examples, see `examples/openstax-sushi-chef.py` (json) and `examples/wikipedia-sushi-chef.py` (html)_
+_For more sushi chef examples, see `examples/openstax_sushichef.py` (json) and `examples/wikipedia_sushichef.py` (html)_
 {%- endif %}
