@@ -1,10 +1,17 @@
 import requests
 from selenium import webdriver
 from requests_file import FileAdapter
+from ricecooker.utils.caching import CacheForeverHeuristic, FileCache, CacheControlAdapter, InvalidatingCacheControlAdapter
 
 DOWNLOAD_SESSION = requests.Session()                          # Session for downloading content from urls
 DOWNLOAD_SESSION.mount('https://', requests.adapters.HTTPAdapter(max_retries=3))
 DOWNLOAD_SESSION.mount('file://', FileAdapter())
+cache = FileCache('.webcache')
+forever_adapter= CacheControlAdapter(heuristic=CacheForeverHeuristic(), cache=cache)
+
+DOWNLOAD_SESSION.mount('http://', forever_adapter)
+DOWNLOAD_SESSION.mount('https://', forever_adapter)
+
 
 def read(path, loadjs=False):
     """ read: Reads from source and returns contents
