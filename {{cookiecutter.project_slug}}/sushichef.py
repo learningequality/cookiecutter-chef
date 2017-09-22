@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os
-import sys;
+import sys
 sys.path.append(os.getcwd()) # Handle relative imports
 from utils import downloader
 from ricecooker.chefs import SushiChef

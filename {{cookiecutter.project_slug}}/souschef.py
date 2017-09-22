@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os
-import sys;
+import sys
 sys.path.append(os.getcwd()) # Handle relative imports
 from utils import data_writer, path_builder, downloader
 from le_utils.constants import licenses, exercises, content_kinds, file_formats, format_presets, languages
