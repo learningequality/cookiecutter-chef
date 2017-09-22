@@ -23,3 +23,5 @@ if __name__ == '__main__':
         remove_file('examples{}{}'.format(os.path.sep, 'wikipedia_souschef.py'))
         shutil.rmtree('examples{}templates'.format(os.path.sep))
         remove_file('examples{}{}'.format(os.path.sep, 'Sample Channel.zip'))
+
+    print("DONE: Project created at {}".format(PROJECT_DIRECTORY))
