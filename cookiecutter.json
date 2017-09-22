@@ -3,6 +3,7 @@
   "email": "info@learningequality.org",
   "github_username": "learningequality",
   "channel_name": "Channel",
-  "project_slug": "{{ cookiecutter.channel_name.lower().replace(' ', '-').replace('_', '-') }}-chef",
-  "chef_template": ["Sushi Chef", "Sous Chef"]
+  "chef_template": ["Sushi Chef", "Sous Chef"],
+  "project_slug": "{{ cookiecutter.channel_name.lower().replace(' ', '-').replace('_', '-') }}-{% if cookiecutter.chef_template == 'Sous Chef' -%}sous{% elif cookiecutter.chef_template == 'Sushi Chef' -%}sushi{%- endif %}-chef",
+  "channel_language": "en"
 }

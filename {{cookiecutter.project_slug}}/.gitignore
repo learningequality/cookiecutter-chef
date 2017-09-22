@@ -60,3 +60,10 @@ target/
 
 # pyenv python configuration file
 .python-version
+
+# Ricecooker generated files
+storage/*
+.ricecookerfilecache/*
+restore/*
+ghostdriver.log
+.webcache/*
