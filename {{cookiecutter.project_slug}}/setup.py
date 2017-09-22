@@ -13,9 +13,7 @@ except (IOError, ImportError):
 
 requirements = [
     "le_utils>=0.1.2",
-    {% if cookiecutter.chef_template == 'Sushi Chef' -%}
     "ricecooker>=0.6.4",
-    {%- endif %}
     # TODO: put package requirements here
 ]
 
@@ -51,9 +49,6 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
-        "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',

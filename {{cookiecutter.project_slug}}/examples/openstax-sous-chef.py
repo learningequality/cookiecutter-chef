@@ -19,7 +19,7 @@ from selenium import webdriver
 ###########################################################
 
 CHANNEL_NAME = "Open Stax"              # Name of channel
-CHANNEL_SOURCE_ID = "open-stax"         # Channel's unique id
+CHANNEL_SOURCE_ID = "open-stax-sous"    # Channel's unique id
 CHANNEL_DOMAIN = "openstax.org"         # Who is providing the content
 CHANNEL_LANGUAGE = "en"                 # Language of channel
 CHANNEL_DESCRIPTION = None              # Description of the channel (optional)
@@ -51,6 +51,17 @@ LOGGER.setLevel(logging.INFO)
 ###########################################################
 def scrape_source(writer):
     """ scrape_source: Scrapes channel page and writes to a DataWriter
+
+        OpenStax is organized with the following hierarchy:
+            Subject (Folder)
+            |   Book (Folder)
+            |   |   Main High Resolution PDF (File)
+            |   |   Main Low Resolution PDF (File)
+            |   |   Instructor Resources (Folder)
+            |   |   |   Resource PDF (File)
+            |   |   Student Resources (Folder)
+            |   |   |   Resource PDF (File)
+
         Args: writer (DataWriter): class that writes data to folder/csv structure
         Returns: None
     """
@@ -74,10 +85,12 @@ def scrape_source(writer):
         }
 
         # Format content metadata for content
+        authors = ", ".join([a['value']['name'] for a in content['authors'][:5]])
+        authors = authors + " et. al." if len(content['authors']) > 5 else authors
         details = {
             "description": parse_description(content.get('description')),
             "thumbnail": get_thumbnail(content.get('cover_url')),
-            "author": ", ".join([a['value']['name'] for a in content['authors']]),
+            "author": authors,
         }
 
         # Add book to topic tree

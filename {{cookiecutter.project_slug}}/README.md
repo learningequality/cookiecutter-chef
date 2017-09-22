@@ -212,6 +212,10 @@ js_content = read('https://example.com/loadpage', loadjs=True)  # Load js before
  which can be useful for web scraping.
 
 
+
+_For more examples, see `examples/openstax-sous-chef.py` (json) and `examples/wikipedia-sous-chef.py` (html)_
+
+
 {% elif cookiecutter.chef_template == 'Sushi Chef' -%}
 
 A sushi chef is responsible for scraping content from a source and using the
@@ -537,43 +541,8 @@ To see the help menu, type
 
     ./sushichef.py -h
 
-Here the full list of the supported command line args:
 
-   - `-h` (help) will print how to use the rice cooker
-   - `-v` (verbose) will print what the rice cooker is doing
-   - `-u` (update) will force the ricecooker to redownload all files (skip checking the cache)
-   - `--download-attempts=3` will set the maximum number of times to retry downloading files
-   - `--warn` will print out warnings during rice cooking session
-   - `--compress` will compress your high resolution videos to save space
-   - `--token` will authorize you to create your channel (obtained in Step 1)
-   - `--resume` will resume your previous rice cooking session
-   - `--step=LAST` will specify at which step to resume your session
-   - `--reset` will automatically start the rice cooker from the beginning
-   - `--prompt` will prompt you to open your channel once it's been uploaded
-   - `--publish` will automatically publish your channel once it's been uploaded
-   - `--daemon` will start the chef in daemon mode (i.e. the chef will not execute
-      immediately; instead, it will wait to receive commands via the Sushi Bar)
-   - `[OPTIONS]` any additional key=value options you would like to pass to your construct_channel method
+_For more Ricecooker run details, see [README](https://github.com/learningequality/ricecooker/blob/master/README.md)_
 
-
-
-### Optional: Resuming the Rice Cooker ###
-
-If your rice cooking session gets interrupted, you can resume from any step that
-has already completed using `--resume --step=<step>` option. If step is not specified,
-the rice cooker will resume from the last step you ran. If the specified step has
-not been reached, the rice cooker will resume from. Other choices for `--step`:
-
-  - __LAST__:                 Resume where the session left off (default)
-  - __INIT__:                 Resume at beginning of session
-  - __CONSTRUCT_CHANNEL__:    Resume with call to construct channel
-  - __CREATE_TREE__:          Resume at set tree relationships
-  - __DOWNLOAD_FILES__:       Resume at beginning of download process
-  - __GET_FILE_DIFF__:        Resume at call to get file diff from Kolibri Studio
-  - __START_UPLOAD__:         Resume at beginning of uploading files to Kolibri Studio
-  - __UPLOADING_FILES__:      Resume at last upload request
-  - __UPLOAD_CHANNEL__:       Resume at beginning of uploading tree to Kolibri Studio
-  - __PUBLISH_CHANNEL__:      Resume at option to publish channel
-  - __DONE__:                 Resume at prompt to open channel
-
+_For more sushi chef examples, see `examples/openstax-sushi-chef.py` (json) and `examples/wikipedia-sushi-chef.py` (html)_
 {%- endif %}

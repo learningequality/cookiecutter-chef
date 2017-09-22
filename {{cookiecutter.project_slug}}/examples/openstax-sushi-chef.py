@@ -21,7 +21,7 @@ from selenium import webdriver
 ###########################################################
 
 CHANNEL_NAME = "Open Stax"              # Name of channel
-CHANNEL_SOURCE_ID = "open-stax"         # Channel's unique id
+CHANNEL_SOURCE_ID = "open-stax-sushi"   # Channel's unique id
 CHANNEL_DOMAIN = "openstax.org"         # Who is providing the content
 CHANNEL_LANGUAGE = "en"                 # Language of channel
 CHANNEL_DESCRIPTION = None              # Description of the channel (optional)
@@ -44,12 +44,6 @@ LICENSE_MAPPING = {
 }
 COPYRIGHT_HOLDER = "Rice University"
 
-# Set up logging tools
-LOGGER = logging.getLogger()
-__logging_handler = logging.StreamHandler()
-LOGGER.addHandler(__logging_handler)
-LOGGER.setLevel(logging.INFO)
-
 
 """ The chef class that takes care of uploading channel to the content curation server. """
 class MyChef(SushiChef):
@@ -68,9 +62,20 @@ class MyChef(SushiChef):
 
     def construct_channel(self, *args, **kwargs):
         """ construct_channel: Creates ChannelNode and build topic tree
+
+            OpenStax is organized with the following hierarchy:
+                Subject (Topic)
+                |   Book (Topic)
+                |   |   Main High Resolution PDF (DocumentNode)
+                |   |   Main Low Resolution PDF (DocumentNode)
+                |   |   Instructor Resources (Topic)
+                |   |   |   Resource PDF (DocumentNode)
+                |   |   Student Resources (Topic)
+                |   |   |   Resource PDF (DocumentNode)
+
             Returns: ChannelNode
         """
-        LOGGER.info("Constructing channel from {}...".format(BASE_URL))
+        print("Constructing channel from {}...".format(BASE_URL))
 
         channel = self.get_channel(*args, **kwargs)             # Creates ChannelNode from data in self.channel_info
         contents = read_source()                                # Get json data from page
@@ -97,10 +102,12 @@ class MyChef(SushiChef):
             }
 
             # Format content metadata for content
+            authors = ", ".join([a['value']['name'] for a in content['authors'][:5]])
+            authors = authors + " et. al." if len(content['authors']) > 5 else authors
             details = {
                 "description": parse_description(content.get('description')),
                 "thumbnail": get_thumbnail(content.get('cover_url')),
-                "author": ", ".join([a['value']['name'] for a in content['authors']]),
+                "author": authors,
             }
 
             # Add book topic
@@ -114,7 +121,7 @@ class MyChef(SushiChef):
             subject_node.add_child(book_node)
 
             # Create high resolution document
-            LOGGER.info("   Writing {} documents...".format(book.get('title')))
+            print("   Writing {} documents...".format(book.get('title')))
             highres_title = "{} ({} Resolution)".format(content['title'], "High")
             add_file_node(book_node, content.get("high_resolution_pdf_url"), highres_title, **auth_info, **details)
 
@@ -126,7 +133,7 @@ class MyChef(SushiChef):
             add_file_node(book_node, content.get("student_handbook_url"), "Student Handbook", **auth_info, **details)
 
             # Parse resource materials
-            LOGGER.info("   Writing {} resources...".format(book.get('title')))
+            print("   Writing {} resources...".format(book.get('title')))
             parse_resources("Instructor Resources", content.get('book_faculty_resources'), book_node, **auth_info)
             parse_resources("Student Resources", content.get('book_student_resources'), book_node, **auth_info)
 

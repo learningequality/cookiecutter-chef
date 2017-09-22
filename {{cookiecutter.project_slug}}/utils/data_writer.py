@@ -145,13 +145,14 @@ class DataWriter():
         path = path if path.endswith(title) else "{}/{}".format(path, title)
         self._commit(path, title, description=description, language=language, thumbnail=thumbnail, source_id=source_id)
 
-    def add_file(self, path, title, download_url, write_data=True, license=None, copyright_holder=None, **node_data):
+    def add_file(self, path, title, download_url, write_data=True, ext=None, license=None, copyright_holder=None, **node_data):
         """ read: Creates file in csv and writes file to zip
             Args:
                 path: (str) where in zip to write file
                 title: (str) content's title
                 download_url: (str) url or local path to download from
                 write_data: (boolean) indicates whether to add as a csv entry (optional)
+                ext: (str) extension to use for file
                 license (str): content's license
                 source_id: (str) content's original id (optional)
                 description: (str) description of content (optional)
@@ -166,7 +167,7 @@ class DataWriter():
         assert not write_data or license in NO_COPYRIGHT_HOLDER_REQUIRED or copyright_holder, "Licenses must have a copyright holder if they are not public domain"
 
         self._parse_path(path)
-        _name, ext = os.path.splitext(download_url or "")
+        _name, ext = ext or os.path.splitext(download_url or "")
         filepath = "{}/{}{}".format(path, title, ext)
         if download_url and filepath:
             self._write_to_zip(filepath, read(download_url))
