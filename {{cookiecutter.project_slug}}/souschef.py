@@ -36,7 +36,7 @@ def scrape_source(writer):
     """
 
 	# TODO: Replace line with scraping code
-	raise ImplementationError("Scraping method not implemented")
+	raise NotImplementedError("Scraping method not implemented")
 
 
 """ Helper Methods """
