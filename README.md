@@ -9,8 +9,3 @@ Template for creating sushi chef scripts that upload Kolibri channels
 * Run `pip install cookiecutter`
 
 * Run `cookiecutter https://github.com/learningequality/cookiecutter-chef`
-
-
-## Creating your Chef
-
-### Instructions
