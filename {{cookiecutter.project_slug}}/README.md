@@ -4,6 +4,8 @@ Chef for {{cookiecutter.channel_name}}
 
 ## Installation
 
+* [Install Python 3](https://www.python.org/downloads/) if you don't have it already.
+
 * [Install pip](https://pypi.python.org/pypi/pip) if you don't have it already.
 
 * Run `pip install -r requirements.txt`
@@ -214,6 +216,31 @@ js_content = read('https://example.com/loadpage', loadjs=True)  # Load js before
 
 
 _For more examples, see `examples/openstax_souschef.py` (json) and `examples/wikipedia_souschef.py` (html)_
+
+---
+
+## Rubric
+
+_Please make sure your final chef matches the following standards._
+
+#### General Standards
+1. Does the resulting folder structure match the expected topic tree?
+1. Are the Channel.csv and Content.csv files valid (no missing files, data formatted correctly, etc.)?
+1. Does the code work (no infinite loops, exceptions thrown, etc.)?
+1. Are the source_ids determined consistently (not based on a changing url path, in same location every run, etc.)?
+
+#### Coding Standards
+1. Are there no obvious runtime or memory inefficiencies in the code?
+1. Are the functions succinct?
+1. Are there comments where needed?
+1. Are the git commits easy to understand?
+1. Is there no unnecessary nested `if` or `for` loops?
+1. Are variables named descriptively (e.g. `path` vs `p`)?
+
+#### Python Standards
+1. Is the code compatible with Python 3?
+1. Does the code use common standard library functions where needed?
+1. Does the code use common python idioms where needed (with/open, try/except, etc.)?
 
 
 {% elif cookiecutter.chef_template == 'Sushi Chef' -%}
