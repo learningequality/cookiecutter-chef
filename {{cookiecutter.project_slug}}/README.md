@@ -228,6 +228,7 @@ _Please make sure your final chef matches the following standards._
 1. Are the Channel.csv and Content.csv files valid (no missing files, data formatted correctly, etc.)?
 1. Does the code work (no infinite loops, exceptions thrown, etc.)?
 1. Are the source_ids determined consistently (not based on a changing url path, in same location every run, etc.)?
+1. Is there documentation on how to run it (including extra parameters to use)?
 
 #### Coding Standards
 1. Are there no obvious runtime or memory inefficiencies in the code?
