@@ -1,4 +1,5 @@
 import requests
+import time
 from selenium import webdriver
 from requests_file import FileAdapter
 from ricecooker.utils.caching import CacheForeverHeuristic, FileCache, CacheControlAdapter, InvalidatingCacheControlAdapter
