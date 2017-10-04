@@ -1,6 +1,14 @@
 # {{cookiecutter.channel_name}} Chef
 
-Chef for {{cookiecutter.channel_name}}
+Kolibri is an open source educational platform to distribute content to areas with
+little to no connectivity. This content is created on [Kolibri Studio](https://studio.learningequality.org), a platform 
+for creating and organizing content to be exported to Kolibri. The purpose of this 
+project is to create a *chef*, or a program that scrapes a content source and puts 
+it into a format that can be imported into Kolibri Studio. {% if cookiecutter.chef_template == 'Sous Chef' -%}This project will
+read a given source's content and parse and organize that content into a folder + 
+csv structure, which will then be imported into Kolibri Studio. (example can be 
+found under `examples` directory. {%- endif %}
+
 
 ## Installation
 
