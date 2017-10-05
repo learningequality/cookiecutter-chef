@@ -67,4 +67,3 @@ storage/*
 restore/*
 ghostdriver.log
 .webcache/*
-examples/*
