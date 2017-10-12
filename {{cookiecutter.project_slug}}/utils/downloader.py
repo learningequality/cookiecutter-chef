@@ -13,16 +13,19 @@ DOWNLOAD_SESSION.mount('http://', forever_adapter)
 DOWNLOAD_SESSION.mount('https://', forever_adapter)
 
 
-def read(path, loadjs=False):
+def read(path, loadjs=False, session=None, driver=None):
     """ read: Reads from source and returns contents
         Args:
             path: (str) url or local path to download
             loadjs: (boolean) indicates whether to load js (optional)
+            session: (requests.Session) session to use to download (optional)
+            driver: (selenium.webdriver) webdriver to use to download (optional)
         Returns: str content from file or page
     """
+    session = session or DOWNLOAD_SESSION
     try:
         if loadjs:                                              # Wait until js loads then return contents
-            driver = webdriver.PhantomJS()
+            driver = driver or webdriver.PhantomJS()
             driver.get(path)
             time.sleep(5)
             return driver.page_source

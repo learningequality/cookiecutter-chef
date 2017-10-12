@@ -213,6 +213,8 @@ js_content = read('https://example.com/loadpage', loadjs=True)  # Load js before
  The `loadjs` option will load any scripts before reading the contents of the page,
  which can be useful for web scraping.
 
+If you need to use a custom session, you can also use the `session` option. This can
+be useful for sites that require login information.
 
 
 _For more examples, see `examples/openstax_souschef.py` (json) and `examples/wikipedia_souschef.py` (html)_
