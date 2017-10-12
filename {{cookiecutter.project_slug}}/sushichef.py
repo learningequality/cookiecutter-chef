@@ -35,8 +35,8 @@ class MyChef(SushiChef):
         'CHANNEL_SOURCE_ID': CHANNEL_SOURCE_ID,        # Channel's unique id
         'CHANNEL_TITLE': CHANNEL_NAME,                 # Name of channel
         'CHANNEL_LANGUAGE': CHANNEL_LANGUAGE,          # Language of channel
-        'CHANNEL_THUMBNAIL': CHANNEL_DESCRIPTION,      # Local path or url to image file (optional)
-        'CHANNEL_DESCRIPTION': CHANNEL_THUMBNAIL,      # Description of the channel (optional)
+        'CHANNEL_THUMBNAIL': CHANNEL_THUMBNAIL,      # Local path or url to image file (optional)
+        'CHANNEL_DESCRIPTION': CHANNEL_DESCRIPTION,      # Description of the channel (optional)
     }
 
 
