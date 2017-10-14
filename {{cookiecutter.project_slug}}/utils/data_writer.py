@@ -41,7 +41,7 @@ class DataWriter():
             path = os.path.sep.join(path)
         self.zf.writestr(path, contents)
 
-    def _commit(self, path, title, source_id=None, description=None, author=None, language=None, license=None, license_description=None, copyright_holder=None, thumbnail=None):
+    def _commit(self, path, title, source_id=None, description=None, author=None, language=None, license=None, copyright_holder=None, license_description=None, thumbnail=None):
         """ _commit: Adds folder/file to map
             Args:
                 path: (str) where in zip to write file
@@ -51,8 +51,8 @@ class DataWriter():
                 author (str): who created the content (optional)
                 language (str): language of content (optional)
                 license: (str) content's license (optional)
-                license_description (str): description of content's license (optional)
                 copyright_holder (str): holder of content's license (optional)
+                license_description (str): description of content's license (optional)
                 thumbnail (str):  path to thumbnail in zip (optional)
             Returns: None
         """
@@ -60,12 +60,12 @@ class DataWriter():
         self.map.update({path: {
             'title': title or node and node.get('path'),
             'source_id': source_id or node and node.get('source_id'),
-            'license': license or node and node.get('license'),
             'description': description or node and node.get('description'),
             'author': author or node and node.get('author'),
             'language': language or node and node.get('language'),
-            'license_description': license_description or node and node.get('license_description'),
+            'license': license or node and node.get('license'),
             'copyright_holder': copyright_holder or node and node.get('copyright_holder'),
+            'license_description': license_description or node and node.get('license_description'),
             'thumbnail': thumbnail or node and node.get('thumbnail'),
         }})
 
@@ -119,7 +119,7 @@ class DataWriter():
                 source_id: (str) channel's unique id
                 domain: (str) who is providing the content (e.g. learningequality.org)
                 title: (str): name of channel
-                language: (str): language of channel (e.g. 'en')
+                language: (str): language code for channel (e.g. 'en')
                 description: (str) description of the channel (optional)
                 thumbnail: (str) path to thumbnail in zip (optional)
             Returns: None
@@ -154,17 +154,19 @@ class DataWriter():
                 write_data: (boolean) indicates whether to add as a csv entry (optional)
                 ext: (str) extension to use for file
                 license (str): content's license
+                copyright_holder (str): holder of content's license (required except for PUBLIC_DOMAIN)
+                license_description (str): description of content's license (optional)
                 source_id: (str) content's original id (optional)
                 description: (str) description of content (optional)
                 author (str): who created the content (optional)
                 language (str): language of content (optional)
-                license_description (str): description of content's license (optional)
-                copyright_holder (str): holder of content's license (optional)
                 thumbnail (str):  path to thumbnail in zip (optional)
             Returns: path to file in zip
         """
-        assert not write_data or license, "Files must have a license"
-        assert not write_data or license in NO_COPYRIGHT_HOLDER_REQUIRED or copyright_holder, "Licenses must have a copyright holder if they are not public domain"
+        if write_data:
+            assert license, "Files must have a license"
+            copyright_holder = None if copyright_holder.strip() == '' else copyright_holder
+            assert license in NO_COPYRIGHT_HOLDER_REQUIRED or copyright_holder, "Licenses must have a copyright holder if they are not public domain"
 
         self._parse_path(path)
         _name, ext = ext or os.path.splitext(download_url or "")
