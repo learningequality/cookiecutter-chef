@@ -32,7 +32,7 @@ which will then be imported into Kolibri Studio. (example can be found under
            following command: `virtualenv -p C:/Python36/python.exe venv`.
            You may need to adjust the `-p` argument depending on where your version
            of Python is located.
-         * Activate the virtualenv called `venv` by running: `venv\Scripts\activate`
+         * Activate the virtualenv called `venv` by running: `.\venv\Scripts\activate`
 
 * Run `pip install -r requirements.txt` to install the required python libraries.
 
@@ -73,8 +73,8 @@ depend on JavaScript to build the page DOM tree.
 If you need to use a custom session, you can also use the `session` option. This can
 be useful for sites that require login information.
 
+For more examples, see `examples/openstax_souschef.py` (json) and `examples/wikipedia_souschef.py` (html).
 
-_For more examples, see `examples/openstax_souschef.py` (json) and `examples/wikipedia_souschef.py` (html)_
 
 
 ### HTML parsing using BeautifulSoup
@@ -168,6 +168,18 @@ writer.add_channel(CHANNEL_NAME, CHANNEL_SOURCE_ID, CHANNEL_DOMAIN, CHANNEL_LANG
 
 The DataWriter's `add_file` method returns a filepath to the downloaded thumbnail.
 This method will be covered more in-depth in Step 4.
+
+Every channel must have language code specified (a string, e.g., `'en'`, `'fr'`).
+To check if a language code exists, you can use the helper function `getlang`,
+or lookup the language by name using `getlang_by_name` or `getlang_by_native_name`:
+```
+from le_utils.constants.languages import getlang, getlang_by_name, getlang_by_native_name
+getlang('fr').code                       # = 'fr'
+getlang_by_name('French').code           # = 'fr'
+getlang_by_native_name('Français').code  # = 'fr'
+```
+The same language codes can optionally be applied to folders and files if they
+differ from the channel language (otherwise assumed to be the same as channel).
 
 
 ### Step 3: Add a Folder
