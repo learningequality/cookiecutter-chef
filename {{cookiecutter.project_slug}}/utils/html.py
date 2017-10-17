@@ -61,9 +61,6 @@ class HTMLWriter():
         """
         filepath = "{}/{}".format(directory, filename)
 
-        if filepath == url or filepath in self.zf.namelist():
-            return filepath
-
         self._write_to_zipfile(filepath, contents)
         return filepath
 
