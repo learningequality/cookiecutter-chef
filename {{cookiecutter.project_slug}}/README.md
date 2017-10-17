@@ -304,7 +304,7 @@ zipper.write_main_file(contents)
 You can also add other files (images, stylesheets, etc.) using `write_file`:
 ```
 # Returns path to file "styles/style.css"
-css_path = zipper.write_file("body{padding:30px}", "style.css", directory="styles")
+css_path = zipper.write_file("style.css", "body{padding:30px}", directory="styles")
 contents = "...<link href='{}' rel='stylesheet'></link>...".format(css_path)
 ```
 

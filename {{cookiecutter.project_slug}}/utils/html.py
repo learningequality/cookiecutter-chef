@@ -48,11 +48,11 @@ class HTMLWriter():
         """
         self.zf.close()
 
-    def write_file(self, contents, filename, directory="src"):
+    def write_file(self, filename, contents, directory="src"):
         """ write_file: Write files referenced by main file
             Args:
-                contents: (str) contents of file
                 filename: (str) name of file in zip
+                contents: (str) contents of file
                 directory: (str) directory in zipfile to write file to (optional)
             Returns: path to file in zip
         """
