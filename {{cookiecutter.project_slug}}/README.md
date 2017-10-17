@@ -1,12 +1,12 @@
 # {{cookiecutter.channel_name}} Chef
 
 Kolibri is an open source educational platform to distribute content to areas with
-little to no connectivity. This content is created on [Kolibri Studio](https://studio.learningequality.org), a platform 
-for creating and organizing content to be exported to Kolibri. The purpose of this 
-project is to create a *chef*, or a program that scrapes a content source and puts 
+little to no connectivity. This content is created on [Kolibri Studio](https://studio.learningequality.org), a platform
+for creating and organizing content to be exported to Kolibri. The purpose of this
+project is to create a *chef*, or a program that scrapes a content source and puts
 it into a format that can be imported into Kolibri Studio. {% if cookiecutter.chef_template == 'Sous Chef' -%}This project will
-read a given source's content and parse and organize that content into a folder + 
-csv structure, which will then be imported into Kolibri Studio. (example can be 
+read a given source's content and parse and organize that content into a folder +
+csv structure, which will then be imported into Kolibri Studio. (example can be
 found under `examples` directory. {%- endif %}
 
 
@@ -74,7 +74,7 @@ CHANNEL_DOMAIN = <yourdomain.org>"
 CHANNEL_LANGUAGE = "en"
 CHANNEL_DESCRIPTION = "What is this channel about?"
 
-with data_writer.DataWriter() as writer:
+with DataWriter() as writer:
     writer.add_channel(CHANNEL_NAME, CHANNEL_SOURCE_ID, CHANNEL_DOMAIN, CHANNEL_LANGUAGE, description=CHANNEL_DESCRIPTION)
 ```
 
@@ -223,6 +223,36 @@ js_content = read('https://example.com/loadpage', loadjs=True)  # Load js before
 
 If you need to use a custom session, you can also use the `session` option. This can
 be useful for sites that require login information.
+
+
+
+### HTMLWriter
+
+The HTMLWriter is a tool for generating zip files to be uploaded to Kolibri Studio
+
+First, open an HTMLWriter context:
+
+```
+from utils.html import HTMLWriter
+with HTMLWriter() as zipper:
+    # Add your code here
+```
+
+To write the main file, you will need to use the `write_main_file` method
+
+```
+contents = "<html><head></head><body>Hello, World!</body></html>"
+zipper.write_main_file(contents)
+```
+
+You can also add other files (images, stylesheets, etc.) using `write_file`:
+```
+# Returns path to file "styles/style.css"
+css_path = zipper.write_file("body{padding:30px}", "style.css", directory="styles")
+contents = "...<link href='{}' rel='stylesheet'></link>...".format(css_path)
+```
+
+To parse html pages, see [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
 
 
 _For more examples, see `examples/openstax_souschef.py` (json) and `examples/wikipedia_souschef.py` (html)_

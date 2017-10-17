@@ -146,7 +146,7 @@ class DataWriter():
         self._commit(path, title, description=description, language=language, thumbnail=thumbnail, source_id=source_id)
 
     def add_file(self, path, title, download_url, write_data=True, ext=None, license=None, copyright_holder=None, **node_data):
-        """ read: Creates file in csv and writes file to zip
+        """ add_file: Creates file in csv and writes file to zip
             Args:
                 path: (str) where in zip to write file
                 title: (str) content's title
