@@ -24,16 +24,13 @@ class HTMLWriter():
         """ Called when closing context """
         self.close()
 
-    def _escape_str(self, text):
-        return text.decode('utf-8').replace('“', '"').replace('”', '"').replace('’', "'").encode('utf-8')
-
     def _write_to_zipfile(self, filename, content):
         if filename not in self.zf.namelist():
             info = zipfile.ZipInfo(filename, date_time=(2013, 3, 14, 1, 59, 26))
             info.comment = "HTML FILE".encode()
             info.compress_type = zipfile.ZIP_STORED
             info.create_system = 0
-            self.zf.writestr(info, self._escape_str(content))
+            self.zf.writestr(info, content)
 
     """ USER-FACING METHODS """
 
