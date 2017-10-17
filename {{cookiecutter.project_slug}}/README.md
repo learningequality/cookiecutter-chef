@@ -21,11 +21,18 @@ which will then be imported into Kolibri Studio. (example can be found under
 
 * Create a Python virtual environment for this project (optional, but recommended):
    * Install the virtualenv package: `pip install vritualenv`
-   * Create a virtual env called `venv` in the current directory using the following
-     command: `virtualenv -p python3  venv`
-   * Activate the virtualenv called `venv` by running: `source venv/bin/activate`
-     (or `venv\Scripts\activate` on Windows). Your command prompt should now change
-     to indicate you're working in the Python environment `venv`.
+   * The next steps depends if you're using UNIX (Mac/Linux) or Windows:
+      * For UNIX systems:
+         * Create a virtual env called `venv` in the current directory using the
+           following command: `virtualenv -p python3  venv`
+         * Activate the virtualenv called `venv` by running: `source venv/bin/activate`.
+           Your command prompt will change to indicate you're working inside `venv`.
+      * For Windows systems:
+         * Create a virtual env called `venv` in the current directory using the
+           following command: `virtualenv -p C:/Python36/python.exe venv`.
+           You may need to adjust the `-p` argument depending on where your version
+           of Python is located.
+         * Activate the virtualenv called `venv` by running: `.\venv\Scripts\activate`
 
 * Run `pip install -r requirements.txt` to install the required python libraries.
 
@@ -39,6 +46,70 @@ and csv structure (see example `examples/Sample Channel.zip`)
 
 A sous chef skeleton script has been started for you, see [`souschef.py`](./souschef.py).
 
+
+## Getting started
+
+Here are some notes and sample code to help you get started.
+
+
+### Downloader
+
+The script `utils/downloader.py` has a `read` function that can read from both
+urls and file paths. To use:
+
+```
+from utils.downloader import read
+
+local_file_content = read('/path/to/local/file.pdf')            # Load local file
+web_content = read('https://example.com/page')                  # Load web page contents
+js_content = read('https://example.com/loadpage', loadjs=True)  # Load js before getting contents
+
+```
+
+The `loadjs` option will run the JavaScript code on the webpage before reading
+the contents of the page, which can be useful for scraping certain websites that
+depend on JavaScript to build the page DOM tree.
+
+If you need to use a custom session, you can also use the `session` option. This can
+be useful for sites that require login information.
+
+For more examples, see `examples/openstax_souschef.py` (json) and `examples/wikipedia_souschef.py` (html).
+
+
+
+### HTML parsing using BeautifulSoup
+
+BeautifulSoup is an HTML parsing library that allows to select various DOM elements,
+and extract their attributes and text contents. Here is some sample code for getting
+the text of the LE mission statement.
+
+```
+from bs4 import BeautifulSoup
+from utils.downloader import read
+
+url = 'https://learningequality.org/'
+html = read(url)
+page = BeautifulSoup(html, 'html.parser')
+
+main_div = page.find('div', {'id': 'body-content'})
+mission_el = main_div.find('h3', class_='mission-state')
+mission = mission_el.get_text().strip()
+print(mission)
+```
+
+The most commonly used parts of the BeautifulSoup API are:
+  - `.find(tag_name,  <spec>)`: find the next occurrence of the tag `tag_name` that
+     has attributes specified in `<spec>` (given as a dictionary), or can use the
+     shortcut options `id` and `class_` (note extra underscore).
+  - `.find_all(tag_name, <spec>)`: same as above but returns a list of all matching
+     elements. Use the optional keyword argument `recursive=False` to select only
+     immediate child nodes (instead of including children of children, etc.).
+  - `.next_sibling`: find the next element (for badly formatted pages with no useful selectors)
+  - `.get_text()` extracts the text contents of the node. See also helper method
+    called `get_text` that performs additional cleanup of newlines and spaces.
+  - `.extract()`: to remove a element from the DOM tree (useful to remove labels, and extra stuff)
+
+For more info about BeautifulSoup, see [the docs](https://www.crummy.com/software/BeautifulSoup/bs4/doc/).
 
 
 ## Using the DataWriter
@@ -97,6 +168,18 @@ writer.add_channel(CHANNEL_NAME, CHANNEL_SOURCE_ID, CHANNEL_DOMAIN, CHANNEL_LANG
 
 The DataWriter's `add_file` method returns a filepath to the downloaded thumbnail.
 This method will be covered more in-depth in Step 4.
+
+Every channel must have language code specified (a string, e.g., `'en'`, `'fr'`).
+To check if a language code exists, you can use the helper function `getlang`,
+or lookup the language by name using `getlang_by_name` or `getlang_by_native_name`:
+```
+from le_utils.constants.languages import getlang, getlang_by_name, getlang_by_native_name
+getlang('fr').code                       # = 'fr'
+getlang_by_name('French').code           # = 'fr'
+getlang_by_native_name('Français').code  # = 'fr'
+```
+The same language codes can optionally be applied to folders and files if they
+differ from the channel language (otherwise assumed to be the same as channel).
 
 
 ### Step 3: Add a Folder
@@ -158,6 +241,14 @@ thumbnail = writer.add_file(PATH, "Thumbnail", "url/or/link/to/thumbnail.png", w
 writer.add_folder(TOPIC_PATH, TOPIC_NAME, thumbnail=thumbnail)
 ```
 
+**Every content node must have a `license` and `copyright_holder`**, otherwise
+the later stages of the content pipeline will reject. You can see the full list
+of allowed license codes by running `print(le_utils.constants.licenses.choices)`.
+Use the ALL_CAPS constants to obtain the appropriate string code for a license.
+For example, to set a file's license to the Creative Commons CC BY-NC-SA, get
+get the code from `licenses.CC_BY_NC_SA`.
+
+Note: Files with `licenses.PUBLIC_DOMAIN` do not require a `copyright_holder`.
 
 
 ## Extra Tools
@@ -204,32 +295,6 @@ To clear the path:
 PATH.set('Topic 1', 'Topic 2')    # str(PATH): 'Channel/Topic 1/Topic 2'
 PATH.reset()                      # str(PATH): 'Channel'
 ```
-
-
-
-### Downloader
-
-The script `utils/downloader.py` has a `read` function that can read from both
-urls and file paths. To use:
-
-```
-from utils.downloader import read
-
-local_file_content = read('/path/to/local/file.pdf')            # Load local file
-web_content = read('https://example.com/page')                  # Load web page contents
-js_content = read('https://example.com/loadpage', loadjs=True)  # Load js before getting contents
-
-```
-
-The `loadjs` option will run the JavaScript code on the webpage before reading
-the contents of the page, which can be useful for scraping certain websites that
-depend on JavaScript to build the page DOM tree.
-
-If you need to use a custom session, you can also use the `session` option. This can
-be useful for sites that require login information.
-
-
-_For more examples, see `examples/openstax_souschef.py` (json) and `examples/wikipedia_souschef.py` (html)_
 
 
 ---
