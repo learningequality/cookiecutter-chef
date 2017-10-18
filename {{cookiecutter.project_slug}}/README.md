@@ -341,13 +341,13 @@ You can also add other files (images, stylesheets, etc.) using `write_file`, `wr
 ```
 # Returns path to file "styles/style.css"
 css_path = zipper.write_contents("style.css", "body{padding:30px}", directory="styles")
-contents = "...<link href='{}' rel='stylesheet'></link>...".format(css_path)
+extra_head = "<link href='{}' rel='stylesheet'></link>".format(css_path)         # Can be inserted into <head>
 
-img_path = zipper.write_file("path/to/img.png") # Note: file must be local
-contents = "...<img src='{}'>...".format(img_path)
+img_path = zipper.write_file("path/to/img.png")                                  # Note: file must be local
+img_tag = "<img src='{}'>...".format(img_path)                                   # Can be inserted as image
 
 script_path = zipper.write_url("src.js", "http://example.com/src.js", directory="src")
-contents = "...<script src='{}' type='text/javascript'></script>...".format(script_path)
+script = "<script src='{}' type='text/javascript'></script>".format(script_path) # Can be inserted into html
 ```
 
 (See above example on BeautifulSoup on how to parse html)
