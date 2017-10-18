@@ -330,11 +330,11 @@ with HTMLWriter('./myzipfile.zip') as zipper:
     # Add your code here
 ```
 
-To write the main file, you will need to use the `write_main_file` method
+To write the main file, you will need to use the `write_index_contents` method
 
 ```
 contents = "<html><head></head><body>Hello, World!</body></html>"
-zipper.write_main_file(contents)
+zipper.write_index_contents(contents)
 ```
 
 You can also add other files (images, stylesheets, etc.) using `write_file`, `write_contents` and `write_url`:

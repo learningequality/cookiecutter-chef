@@ -50,6 +50,7 @@ class HTMLWriter():
             Args: None
             Returns: None
         """
+        assert 'index.html' in self.zf.namelist(), "Invalid Zip: must have index.html file (use write_index_contents method)"
         self.zf.close()
 
     def write_contents(self, filename, contents, directory="."):
@@ -86,8 +87,8 @@ class HTMLWriter():
         """
         return self.write_contents(filename, read(url), directory=directory)
 
-    def write_main_file(self, contents):
-        """ write_main_file: Write main index file to zip
+    def write_index_contents(self, contents):
+        """ write_index_contents: Write main index file to zip
             Args:
                 contents: (str) contents of file
             Returns: path to file in zip
