@@ -82,7 +82,7 @@ class HTMLWriter():
             filename = filename or os.path.basename(filepath)
             arcname = "{}{}".format(directory, filename)
         self._copy_to_zipfile(filepath, arcname=arcname)
-        return filepath
+        return arcname or filepath
 
     def write_url(self, url, filename, directory="."):
         """ write_url: Write contents from url to filename in zip
