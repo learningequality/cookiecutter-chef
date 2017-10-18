@@ -52,7 +52,7 @@ class HTMLWriter():
         """
         self.zf.close()
 
-    def write_contents(self, filename, contents, directory="src"):
+    def write_contents(self, filename, contents, directory="."):
         """ write_contents: Write contents to filename in zip
             Args:
                 contents: (str) contents of file
@@ -74,7 +74,7 @@ class HTMLWriter():
         self._copy_to_zipfile(filepath)
         return filepath
 
-    def write_url(self, url, filename, directory="src"):
+    def write_url(self, url, filename, directory="."):
         """ write_url: Write contents from url to filename in zip
             Args:
                 url: (str) url to file to download

@@ -74,6 +74,42 @@ For more examples, see `examples/openstax_souschef.py` (json) and `examples/wiki
 
 
 
+### HTML parsing using BeautifulSoup
+
+BeautifulSoup is an HTML parsing library that allows to select various DOM elements,
+and extract their attributes and text contents. Here is some sample code for getting
+the text of the LE mission statement.
+
+```
+from bs4 import BeautifulSoup
+from utils.downloader import read
+
+url = 'https://learningequality.org/'
+html = read(url)
+page = BeautifulSoup(html, 'html.parser')
+
+main_div = page.find('div', {'id': 'body-content'})
+mission_el = main_div.find('h3', class_='mission-state')
+mission = mission_el.get_text().strip()
+print(mission)
+```
+
+The most commonly used parts of the BeautifulSoup API are:
+  - `.find(tag_name,  <spec>)`: find the next occurrence of the tag `tag_name` that
+     has attributes specified in `<spec>` (given as a dictionary), or can use the
+     shortcut options `id` and `class_` (note extra underscore).
+  - `.find_all(tag_name, <spec>)`: same as above but returns a list of all matching
+     elements. Use the optional keyword argument `recursive=False` to select only
+     immediate child nodes (instead of including children of children, etc.).
+  - `.next_sibling`: find the next element (for badly formatted pages with no useful selectors)
+  - `.get_text()` extracts the text contents of the node. See also helper method
+    called `get_text` that performs additional cleanup of newlines and spaces.
+  - `.extract()`: to remove a element from the DOM tree (useful to remove labels, and extra stuff)
+
+For more info about BeautifulSoup, see [the docs](https://www.crummy.com/software/BeautifulSoup/bs4/doc/).
+
+
+
 ## Using the DataWriter
 
 The DataWriter (`utils.data_writer.DataWriter`) is a tool for creating channel
@@ -290,7 +326,7 @@ First, open an HTMLWriter context:
 
 ```
 from utils.html import HTMLWriter
-with HTMLWriter() as zipper:
+with HTMLWriter('./myzipfile.zip') as zipper:
     # Add your code here
 ```
 
@@ -314,41 +350,7 @@ script_path = zipper.write_url("src.js", "http://example.com/src.js", directory=
 contents = "...<script src='{}' type='text/javascript'></script>...".format(script_path)
 ```
 
-
-
-#### HTML parsing using BeautifulSoup
-
-BeautifulSoup is an HTML parsing library that allows to select various DOM elements,
-and extract their attributes and text contents. Here is some sample code for getting
-the text of the LE mission statement.
-
-```
-from bs4 import BeautifulSoup
-from utils.downloader import read
-
-url = 'https://learningequality.org/'
-html = read(url)
-page = BeautifulSoup(html, 'html.parser')
-
-main_div = page.find('div', {'id': 'body-content'})
-mission_el = main_div.find('h3', class_='mission-state')
-mission = mission_el.get_text().strip()
-print(mission)
-```
-
-The most commonly used parts of the BeautifulSoup API are:
-  - `.find(tag_name,  <spec>)`: find the next occurrence of the tag `tag_name` that
-     has attributes specified in `<spec>` (given as a dictionary), or can use the
-     shortcut options `id` and `class_` (note extra underscore).
-  - `.find_all(tag_name, <spec>)`: same as above but returns a list of all matching
-     elements. Use the optional keyword argument `recursive=False` to select only
-     immediate child nodes (instead of including children of children, etc.).
-  - `.next_sibling`: find the next element (for badly formatted pages with no useful selectors)
-  - `.get_text()` extracts the text contents of the node. See also helper method
-    called `get_text` that performs additional cleanup of newlines and spaces.
-  - `.extract()`: to remove a element from the DOM tree (useful to remove labels, and extra stuff)
-
-For more info about BeautifulSoup, see [the docs](https://www.crummy.com/software/BeautifulSoup/bs4/doc/).
+(See above example on BeautifulSoup on how to parse html)
 
 
 
