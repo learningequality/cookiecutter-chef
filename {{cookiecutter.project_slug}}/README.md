@@ -350,6 +350,14 @@ script_path = zipper.write_url("src.js", "http://example.com/src.js", directory=
 script = "<script src='{}' type='text/javascript'></script>".format(script_path) # Can be inserted into html
 ```
 
+If you need to check if a file exists in the zipfile, you can use the `contains` method:
+```
+# Zipfile has "index.html" file
+zipper.contains('index.html')     # Returns True
+zipper.contains('css/style.css')  # Returns False
+```
+
+
 (See above example on BeautifulSoup on how to parse html)
 
 

@@ -26,7 +26,7 @@ class HTMLWriter():
         self.close()
 
     def _write_to_zipfile(self, filename, content):
-        if filename not in self.zf.namelist():
+        if not self.contains(filename):
             info = zipfile.ZipInfo(filename, date_time=(2013, 3, 14, 1, 59, 26))
             info.comment = "HTML FILE".encode()
             info.compress_type = zipfile.ZIP_STORED
@@ -35,7 +35,7 @@ class HTMLWriter():
 
     def _copy_to_zipfile(self, filepath, arcname=None):
         filename = arcname or filepath
-        if filename not in self.zf.namelist():
+        if not self.contains(filename):
             self.zf.write(filepath, arcname=arcname)
 
     """ USER-FACING METHODS """
@@ -52,10 +52,17 @@ class HTMLWriter():
             Args: None
             Returns: None
         """
-        index_present = 'index.html' in self.zf.namelist()
+        index_present = self.contains('index.html')
         self.zf.close() # Make sure zipfile closes no matter what
         if not index_present:
             raise ReferenceError("Invalid Zip at {}: missing index.html file (use write_index_contents method)".format(self.write_to_path))
+
+    def contains(self, filename):
+        """ contains: Checks if filename is in the zipfile
+            Args: filename: (str) name of file to check
+            Returns: boolean indicating whether or not filename is in the zip
+        """
+        return filename in self.zf.namelist()
 
     def write_contents(self, filename, contents, directory="."):
         """ write_contents: Write contents to filename in zip
