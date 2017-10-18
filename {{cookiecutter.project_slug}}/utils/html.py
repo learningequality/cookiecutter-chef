@@ -1,5 +1,6 @@
 import os
 import zipfile
+from utils.downloader import read
 
 class HTMLWriter():
     """
@@ -72,6 +73,16 @@ class HTMLWriter():
         """
         self._copy_to_zipfile(filepath)
         return filepath
+
+    def write_url(self, url, filename, directory="src"):
+        """ write_url: Write contents from url to filename in zip
+            Args:
+                url: (str) url to file to download
+                filename: (str) name of file in zip
+                directory: (str) directory in zipfile to write file to (optional)
+            Returns: path to file in zip
+        """
+        return self.write_contents(filename, read(url), directory=directory)
 
     def write_main_file(self, contents):
         """ write_main_file: Write main index file to zip

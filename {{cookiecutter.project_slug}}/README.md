@@ -301,7 +301,7 @@ contents = "<html><head></head><body>Hello, World!</body></html>"
 zipper.write_main_file(contents)
 ```
 
-You can also add other files (images, stylesheets, etc.) using `write_file` and `write_contents`:
+You can also add other files (images, stylesheets, etc.) using `write_file`, `write_contents` and `write_url`:
 ```
 # Returns path to file "styles/style.css"
 css_path = zipper.write_contents("style.css", "body{padding:30px}", directory="styles")
@@ -309,6 +309,9 @@ contents = "...<link href='{}' rel='stylesheet'></link>...".format(css_path)
 
 img_path = zipper.write_file("path/to/img.png") # Note: file must be local
 contents = "...<img src='{}'>...".format(img_path)
+
+script_path = zipper.write_url("src.js", "http://example.com/src.js", directory="src")
+contents = "...<script src='{}' type='text/javascript'></script>...".format(script_path)
 ```
 
 
