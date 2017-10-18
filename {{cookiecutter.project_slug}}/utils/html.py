@@ -10,10 +10,11 @@ class HTMLWriter():
     zf = None               # Zip file to write to
     write_to_path = None    # Where to write zip file
 
-    def __init__(self, write_to_path):
+    def __init__(self, write_to_path, mode="w"):
         """ Args: write_to_path: (str) where to write zip file """
         self.map = {}                       # Keeps track of content to write to csv
         self.write_to_path = write_to_path  # Where to write zip file
+        self.mode = mode                    # What mode to open zipfile in
 
     def __enter__(self):
         """ Called when opening context (e.g. with HTMLWriter() as writer: ) """
@@ -44,7 +45,7 @@ class HTMLWriter():
             Args: None
             Returns: None
         """
-        self.zf = zipfile.ZipFile(self.write_to_path, "w")
+        self.zf = zipfile.ZipFile(self.write_to_path, self.mode)
 
     def close(self):
         """ close: Close zipfile when done
