@@ -79,7 +79,7 @@ class HTMLWriter():
         """
         arcname = None
         if filename or directory:
-            directory = directory + "/" if directory else ""
+            directory = directory.rstrip("/") + "/" if directory else ""
             filename = filename or os.path.basename(filepath)
             arcname = "{}{}".format(directory, filename)
         self._copy_to_zipfile(filepath, arcname=arcname)
