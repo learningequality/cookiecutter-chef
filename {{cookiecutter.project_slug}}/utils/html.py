@@ -32,9 +32,10 @@ class HTMLWriter():
             info.create_system = 0
             self.zf.writestr(info, content)
 
-    def _copy_to_zipfile(self, filename, arcname=None):
+    def _copy_to_zipfile(self, filepath, arcname=None):
+        filename = arcname or filepath
         if filename not in self.zf.namelist():
-            self.zf.write(filename, arcname=arcname)
+            self.zf.write(filepath, arcname=arcname)
 
     """ USER-FACING METHODS """
 
