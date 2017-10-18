@@ -65,11 +65,13 @@ class HTMLWriter():
         return filepath
 
     def write_file(self, filepath):
-        """ write_file: Write file to zip
+        """ write_file: Write local file to zip
             Args:
                 filepath: (str) location to local file
                 directory: (str) directory in zipfile to write file to (optional)
             Returns: path to file in zip
+
+            Note: filepath must be a relative path
         """
         self._copy_to_zipfile(filepath)
         return filepath
