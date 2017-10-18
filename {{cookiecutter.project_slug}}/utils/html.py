@@ -32,9 +32,9 @@ class HTMLWriter():
             info.create_system = 0
             self.zf.writestr(info, content)
 
-    def _copy_to_zipfile(self, filename):
+    def _copy_to_zipfile(self, filename, arcname=None):
         if filename not in self.zf.namelist():
-            self.zf.write(filename)
+            self.zf.write(filename, arcname=arcname)
 
     """ USER-FACING METHODS """
 
@@ -67,7 +67,7 @@ class HTMLWriter():
         self._write_to_zipfile(filepath, contents)
         return filepath
 
-    def write_file(self, filepath):
+    def write_file(self, filepath, filename=None, directory=None):
         """ write_file: Write local file to zip
             Args:
                 filepath: (str) location to local file
@@ -76,7 +76,12 @@ class HTMLWriter():
 
             Note: filepath must be a relative path
         """
-        self._copy_to_zipfile(filepath)
+        arcname = None
+        if filename or directory:
+            directory = directory + "/" if directory else ""
+            filename = filename or os.path.basename(filepath)
+            arcname = "{}{}".format(directory, filename)
+        self._copy_to_zipfile(filepath, arcname=arcname)
         return filepath
 
     def write_url(self, url, filename, directory="."):
