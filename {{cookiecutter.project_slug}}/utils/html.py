@@ -1,4 +1,3 @@
-import zipfile
 import os
 import zipfile
 
@@ -32,6 +31,10 @@ class HTMLWriter():
             info.create_system = 0
             self.zf.writestr(info, content)
 
+    def _copy_to_zipfile(self, filename):
+        if filename not in self.zf.namelist():
+            self.zf.write(filename)
+
     """ USER-FACING METHODS """
 
     def open(self):
@@ -48,17 +51,26 @@ class HTMLWriter():
         """
         self.zf.close()
 
-    def write_file(self, filename, contents, directory="src"):
-        """ write_file: Write files referenced by main file
+    def write_contents(self, filename, contents, directory="src"):
+        """ write_contents: Write contents to filename in zip
             Args:
-                filename: (str) name of file in zip
                 contents: (str) contents of file
+                filename: (str) name of file in zip
                 directory: (str) directory in zipfile to write file to (optional)
             Returns: path to file in zip
         """
         filepath = "{}/{}".format(directory, filename)
-
         self._write_to_zipfile(filepath, contents)
+        return filepath
+
+    def write_file(self, filepath):
+        """ write_file: Write file to zip
+            Args:
+                filepath: (str) location to local file
+                directory: (str) directory in zipfile to write file to (optional)
+            Returns: path to file in zip
+        """
+        self._copy_to_zipfile(filepath)
         return filepath
 
     def write_main_file(self, contents):
