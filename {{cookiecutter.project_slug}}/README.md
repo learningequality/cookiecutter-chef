@@ -1,15 +1,12 @@
 # {{cookiecutter.channel_name}} Chef
 
 Kolibri is an open source educational platform to distribute content to areas with
-little or no internet connectivity. Educational content is created and edited on
-the [Kolibri Studio](https://studio.learningequality.org), which is a platform for
-organizing content that makes it easy to import from the Kolibri applications.
-The purpose of this project is to create a *chef*, or a program that scrapes a
-content source and puts it into a format that can be imported into Kolibri Studio.
-{% if cookiecutter.chef_template == 'Sous Chef' -%}This project will read a given
-source's content and parse and organize that content into a folder + csv structure,
-which will then be imported into Kolibri Studio. (example can be found under
-`examples` directory. {%- endif %}
+little or no internet connectivity. Educational content is created and edited on [Kolibri Studio](https://studio.learningequality.org),
+which is a platform for organizing content to import from the Kolibri applications. The purpose
+of this project is to create a *chef*, or a program that scrapes a content source and puts it
+into a format that can be imported into Kolibri Studio. {% if cookiecutter.chef_template == 'Sous Chef' -%}This project will read a
+given source's content and parse and organize that content into a folder + csv structure,
+which will then be imported into Kolibri Studio. (example can be found under `examples` directory. {%- endif %}
 
 
 
@@ -112,6 +109,7 @@ The most commonly used parts of the BeautifulSoup API are:
 For more info about BeautifulSoup, see [the docs](https://www.crummy.com/software/BeautifulSoup/bs4/doc/).
 
 
+
 ## Using the DataWriter
 
 The DataWriter (`utils.data_writer.DataWriter`) is a tool for creating channel
@@ -156,7 +154,7 @@ CHANNEL_DOMAIN = <yourdomain.org>"
 CHANNEL_LANGUAGE = "en"
 CHANNEL_DESCRIPTION = "What is this channel about?"
 
-with data_writer.DataWriter() as writer:
+with DataWriter() as writer:
     writer.add_channel(CHANNEL_NAME, CHANNEL_SOURCE_ID, CHANNEL_DOMAIN, CHANNEL_LANGUAGE, description=CHANNEL_DESCRIPTION)
 ```
 
@@ -295,6 +293,76 @@ To clear the path:
 PATH.set('Topic 1', 'Topic 2')    # str(PATH): 'Channel/Topic 1/Topic 2'
 PATH.reset()                      # str(PATH): 'Channel'
 ```
+
+
+
+### Downloader (utils.downloader.py)
+
+`downloader.py` has a `read` function that can read from both urls and file paths.
+To use:
+
+```
+from utils.downloader import read
+
+local_file_content = read('/path/to/local/file.pdf')            # Load local file
+web_content = read('https://example.com/page')                  # Load web page contents
+js_content = read('https://example.com/loadpage', loadjs=True)  # Load js before getting contents
+
+```
+
+ The `loadjs` option will load any scripts before reading the contents of the page,
+ which can be useful for web scraping.
+
+If you need to use a custom session, you can also use the `session` option. This can
+be useful for sites that require login information.
+
+
+
+### HTMLWriter
+
+The HTMLWriter is a tool for generating zip files to be uploaded to Kolibri Studio
+
+First, open an HTMLWriter context:
+
+```
+from utils.html import HTMLWriter
+with HTMLWriter('./myzipfile.zip') as zipper:
+    # Add your code here
+```
+
+To write the main file, you will need to use the `write_index_contents` method
+
+```
+contents = "<html><head></head><body>Hello, World!</body></html>"
+zipper.write_index_contents(contents)
+```
+
+You can also add other files (images, stylesheets, etc.) using `write_file`, `write_contents` and `write_url`:
+```
+# Returns path to file "styles/style.css"
+css_path = zipper.write_contents("style.css", "body{padding:30px}", directory="styles")
+extra_head = "<link href='{}' rel='stylesheet'></link>".format(css_path)         # Can be inserted into <head>
+
+img_path = zipper.write_file("path/to/img.png")                                  # Note: file must be local
+img_tag = "<img src='{}'>...".format(img_path)                                   # Can be inserted as image
+
+script_path = zipper.write_url("src.js", "http://example.com/src.js", directory="src")
+script = "<script src='{}' type='text/javascript'></script>".format(script_path) # Can be inserted into html
+```
+
+If you need to check if a file exists in the zipfile, you can use the `contains` method:
+```
+# Zipfile has "index.html" file
+zipper.contains('index.html')     # Returns True
+zipper.contains('css/style.css')  # Returns False
+```
+
+
+(See above example on BeautifulSoup on how to parse html)
+
+
+
+_For more examples, see `examples/openstax_souschef.py` (json) and `examples/wikipedia_souschef.py` (html)_
 
 
 ---

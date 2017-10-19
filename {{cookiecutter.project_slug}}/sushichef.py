@@ -2,7 +2,7 @@
 import os
 import sys
 sys.path.append(os.getcwd()) # Handle relative imports
-from utils import downloader
+from utils import downloader, html
 from ricecooker.chefs import SushiChef
 from ricecooker.classes import nodes, files, questions, licenses
 from ricecooker.exceptions import raise_for_invalid_channel
