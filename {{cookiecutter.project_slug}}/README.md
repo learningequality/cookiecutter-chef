@@ -150,7 +150,7 @@ from utils.data_writer import DataWriter
 
 CHANNEL_NAME = "Channel name shown in UI"
 CHANNEL_SOURCE_ID = "<some unique identifier>"
-CHANNEL_DOMAIN = <yourdomain.org>"
+CHANNEL_DOMAIN = "<yourdomain.org>"
 CHANNEL_LANGUAGE = "en"
 CHANNEL_DESCRIPTION = "What is this channel about?"
 
@@ -195,7 +195,7 @@ Here is an example of how to add a folder:
 ```
 # Assume writer is a DataWriter object
 TOPIC_NAME = "topic"
-writer.add_folder(CHANNEL_NAME + / + TOPIC_NAME, TOPIC_NAME)
+writer.add_folder(CHANNEL_NAME + "/" + TOPIC_NAME, TOPIC_NAME)
 ```
 
 
