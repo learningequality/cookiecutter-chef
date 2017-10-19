@@ -5,6 +5,7 @@ sys.path.append(os.getcwd()) # Handle relative imports
 from utils import downloader, html
 from ricecooker.chefs import SushiChef
 from ricecooker.classes import nodes, files, questions, licenses
+from ricecooker.config import LOGGER                        # Use logger to print messages
 from ricecooker.exceptions import raise_for_invalid_channel
 from le_utils.constants import licenses, exercises, content_kinds, file_formats, format_presets, languages
 
