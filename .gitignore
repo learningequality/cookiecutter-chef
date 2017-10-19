@@ -33,6 +33,7 @@ Temporary Items
 # Distribution / packaging
 .Python
 env/
+venv/
 build/
 develop-eggs/
 dist/
@@ -90,6 +91,9 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints
 
 # Cookiecutter
 output/
