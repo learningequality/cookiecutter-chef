@@ -3,9 +3,10 @@
 import os
 import sys;
 sys.path.append(os.getcwd()) # Handle relative imports
-from utils import downloader
+from utils import downloader, html
 from ricecooker.chefs import SushiChef
 from ricecooker.classes import nodes, files
+from ricecooker.config import LOGGER                        # Use logger to print messages
 from ricecooker.exceptions import raise_for_invalid_channel
 
 """ Additional imports """
@@ -75,7 +76,7 @@ class MyChef(SushiChef):
 
             Returns: ChannelNode
         """
-        print("Constructing channel from {}...".format(BASE_URL))
+        LOGGER.info("Constructing channel from {}...".format(BASE_URL))
 
         channel = self.get_channel(*args, **kwargs)             # Creates ChannelNode from data in self.channel_info
         contents = read_source()                                # Get json data from page
@@ -121,7 +122,7 @@ class MyChef(SushiChef):
             subject_node.add_child(book_node)
 
             # Create high resolution document
-            print("   Writing {} documents...".format(book.get('title')))
+            LOGGER.info("   Writing {} documents...".format(book.get('title')))
             highres_title = "{} ({} Resolution)".format(content['title'], "High")
             add_file_node(book_node, content.get("high_resolution_pdf_url"), highres_title, **auth_info, **details)
 
@@ -133,7 +134,7 @@ class MyChef(SushiChef):
             add_file_node(book_node, content.get("student_handbook_url"), "Student Handbook", **auth_info, **details)
 
             # Parse resource materials
-            print("   Writing {} resources...".format(book.get('title')))
+            LOGGER.info("   Writing {} resources...".format(book.get('title')))
             parse_resources("Instructor Resources", content.get('book_faculty_resources'), book_node, **auth_info)
             parse_resources("Student Resources", content.get('book_student_resources'), book_node, **auth_info)
 

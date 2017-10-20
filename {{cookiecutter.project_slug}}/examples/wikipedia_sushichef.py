@@ -3,9 +3,10 @@
 import os
 import sys;
 sys.path.append(os.getcwd()) # Handle relative imports
-from utils import downloader
+from utils import downloader, html
 from ricecooker.chefs import SushiChef
 from ricecooker.classes import nodes, files
+from ricecooker.config import LOGGER                        # Use logger to print messages
 from ricecooker.exceptions import raise_for_invalid_channel
 
 """ Additional imports """
@@ -65,7 +66,7 @@ class WikipediaChef(SushiChef):
 
             Returns: ChannelNode
         """
-        print("Constructing channel from {}...".format(BASE_URL))
+        LOGGER.info("Constructing channel from {}...".format(BASE_URL))
 
         channel = self.get_channel(*args, **kwargs)                         # Creates ChannelNode from data in self.channel_info
 
@@ -82,7 +83,7 @@ class WikipediaChef(SushiChef):
 
 def create_topic(channel, title, endpoint):
     """ Write folder to zip and download pages """
-    print('   Writing {} Folder...'.format(title))
+    LOGGER.info('   Writing {} Folder...'.format(title))
     topic = nodes.TopicNode(source_id=endpoint, title=title)
     channel.add_child(topic)
     add_subpages_from_wikipedia_list(topic, '{}/{}'.format(BASE_URL, endpoint))
@@ -179,7 +180,7 @@ def add_subpages_from_wikipedia_list(topic, list_url):
         # Extract the URL and title for the subpage
         url = make_fully_qualified_url(link["href"])
         title = link.text
-        print("      Writing {}...".format(title))
+        LOGGER.info("      Writing {}...".format(title))
 
         # Attempt to extract a thumbnail for the subpage, from the second column in the table
         image = columns[1].find("img")
