@@ -9,6 +9,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+venv/
 build/
 develop-eggs/
 dist/
@@ -60,6 +61,10 @@ target/
 
 # pyenv python configuration file
 .python-version
+
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints
 
 # Ricecooker generated files
 storage/*
