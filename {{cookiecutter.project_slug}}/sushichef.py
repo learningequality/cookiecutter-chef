@@ -18,8 +18,8 @@ from le_utils.constants import licenses, exercises, content_kinds, file_formats,
 ###########################################################
 
 CHANNEL_NAME = "{{cookiecutter.channel_name}}"              # Name of channel
-CHANNEL_SOURCE_ID = "{{cookiecutter.github_username}}"      # Channel's unique id
-CHANNEL_DOMAIN = "{{cookiecutter.email}}"                   # Who is providing the content
+CHANNEL_SOURCE_ID = "{{cookiecutter.project_slug}}"         # Channel's unique id
+CHANNEL_DOMAIN = "{{cookiecutter.github_username}}"         # Who is providing the content
 CHANNEL_LANGUAGE = "{{cookiecutter.channel_language}}"      # Language of channel
 CHANNEL_DESCRIPTION = None                                  # Description of the channel (optional)
 CHANNEL_THUMBNAIL = None                                    # Local path or url to image file (optional)
