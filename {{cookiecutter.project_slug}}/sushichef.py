@@ -2,7 +2,7 @@
 import os
 import sys
 sys.path.append(os.getcwd()) # Handle relative imports
-from utils import downloader, html
+from ricecooker.utils import downloader, html_writer
 from ricecooker.chefs import SushiChef
 from ricecooker.classes import nodes, files, questions, licenses
 from ricecooker.config import LOGGER                        # Use logger to print messages

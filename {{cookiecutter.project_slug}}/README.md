@@ -51,11 +51,11 @@ Here are some notes and sample code to help you get started.
 
 ### Downloader
 
-The script `utils/downloader.py` has a `read` function that can read from both
+The Ricecooker script `utils/downloader.py` has a `read` function that can read from both
 urls and file paths. To use:
 
 ```
-from utils.downloader import read
+from ricecooker.utils.downloader import read
 
 local_file_content = read('/path/to/local/file.pdf')            # Load local file
 web_content = read('https://example.com/page')                  # Load web page contents
@@ -82,7 +82,7 @@ the text of the LE mission statement.
 
 ```
 from bs4 import BeautifulSoup
-from utils.downloader import read
+from ricecooker.utils.downloader import read
 
 url = 'https://learningequality.org/'
 html = read(url)
@@ -123,8 +123,8 @@ and `CSV` metadata files that will be used to create the channel on Kolibri Stud
 The `DataWriter` class is meant to be used as a context manager. To use it, add
 the following to your code:
 ```
-from utils.data_writer import DataWriter
-with data_writer.DataWriter() as writer:
+from ricecooker.utils.data_writer import DataWriter
+with DataWriter() as writer:
     # Add your code here
 ```
 
@@ -146,7 +146,7 @@ Next, you will need to create a channel. Channels need the following arguments:
 To create a channel, call the `add_channel` method from DataWriter
 
 ```
-from utils.data_writer import DataWriter
+from ricecooker.utils.data_writer import DataWriter
 
 CHANNEL_NAME = "Channel name shown in UI"
 CHANNEL_SOURCE_ID = "<some unique identifier>"
@@ -257,7 +257,7 @@ The `PathBuilder` clas is a tool for tracking folder and file paths to write to
 the zip file. To initialize a PathBuilder object, you need to specify a channel name:
 
 ```
-from utils.path_builder import PathBuilder
+from ricecooker.utils.path_builder import PathBuilder
 
 CHANNEL_NAME = "Channel"
 PATH = PathBuilder(channel_name=CHANNEL_NAME)
@@ -302,7 +302,7 @@ PATH.reset()                      # str(PATH): 'Channel'
 To use:
 
 ```
-from utils.downloader import read
+from ricecooker.utils.downloader import read
 
 local_file_content = read('/path/to/local/file.pdf')            # Load local file
 web_content = read('https://example.com/page')                  # Load web page contents
@@ -325,7 +325,7 @@ The HTMLWriter is a tool for generating zip files to be uploaded to Kolibri Stud
 First, open an HTMLWriter context:
 
 ```
-from utils.html import HTMLWriter
+from ricecooker.utils.html_writer import HTMLWriter
 with HTMLWriter('./myzipfile.zip') as zipper:
     # Add your code here
 ```
