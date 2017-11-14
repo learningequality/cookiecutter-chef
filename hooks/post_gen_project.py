@@ -18,8 +18,6 @@ if __name__ == '__main__':
     if '{{cookiecutter.chef_template}}' != 'Sous Chef':
         remove_file('souschef.py')
         remove_file('Quickstart.ipynb')
-        remove_file('utils{}{}'.format(os.path.sep, 'data_writer.py'))
-        remove_file('utils{}{}'.format(os.path.sep, 'path_builder.py'))
         remove_file('examples{}{}'.format(os.path.sep, 'openstax_souschef.py'))
         remove_file('examples{}{}'.format(os.path.sep, 'wikipedia_souschef.py'))
         shutil.rmtree('examples{}templates'.format(os.path.sep))
