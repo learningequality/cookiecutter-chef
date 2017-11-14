@@ -3,7 +3,7 @@
 import os
 import sys;
 sys.path.append(os.getcwd()) # Handle relative imports
-from utils import data_writer, path_builder, downloader, html
+from ricecooker.utils import data_writer, path_builder, downloader, html_writer
 from le_utils.constants import licenses
 
 
@@ -14,7 +14,6 @@ import logging
 import tempfile
 import zipfile
 from bs4 import BeautifulSoup
-from utils import data_writer, path_builder, downloader
 from le_utils.constants import licenses
 from ricecooker.utils.html import download_file
 from ricecooker.utils.zip import create_predictable_zip

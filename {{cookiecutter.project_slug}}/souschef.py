@@ -2,7 +2,7 @@
 import os
 import sys
 sys.path.append(os.getcwd()) # Handle relative imports
-from utils import data_writer, path_builder, downloader, html
+from ricecooker.utils import data_writer, path_builder, downloader, html_writer
 from le_utils.constants import licenses, exercises, content_kinds, file_formats, format_presets, languages
 
 # Additional imports

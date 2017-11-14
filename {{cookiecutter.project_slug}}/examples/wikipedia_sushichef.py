@@ -3,7 +3,7 @@
 import os
 import sys;
 sys.path.append(os.getcwd()) # Handle relative imports
-from utils import downloader, html
+from ricecooker.utils import downloader, html_writer
 from ricecooker.chefs import SushiChef
 from ricecooker.classes import nodes, files
 from ricecooker.config import LOGGER                        # Use logger to print messages
@@ -48,8 +48,8 @@ class WikipediaChef(SushiChef):
         'CHANNEL_SOURCE_ID': CHANNEL_SOURCE_ID,        # Channel's unique id
         'CHANNEL_TITLE': CHANNEL_NAME,                 # Name of channel
         'CHANNEL_LANGUAGE': CHANNEL_LANGUAGE,          # Language of channel
-        'CHANNEL_THUMBNAIL': CHANNEL_DESCRIPTION,      # Local path or url to image file (optional)
-        'CHANNEL_DESCRIPTION': CHANNEL_THUMBNAIL,      # Description of the channel (optional)
+        'CHANNEL_THUMBNAIL': CHANNEL_THUMBNAIL,        # Local path or url to image file (optional)
+        'CHANNEL_DESCRIPTION': CHANNEL_DESCRIPTION,    # Description of the channel (optional)
     }
 
     """ Main scraping method """
