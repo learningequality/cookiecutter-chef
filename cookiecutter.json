@@ -3,6 +3,7 @@
   "email": "info@learningequality.org",
   "github_username": "learningequality",
   "channel_name": "Channel",
+  "channel_domain": "{{ cookiecutter.github_username }}",
   "chef_template": ["Sushi Chef", "Sous Chef"],
   "project_slug": "sushi-chef-{{ cookiecutter.channel_name.lower().replace(' ', '-').replace('_', '-') }}",
   "channel_language": "en"
