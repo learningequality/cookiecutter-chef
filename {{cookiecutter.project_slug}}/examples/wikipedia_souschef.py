@@ -23,7 +23,7 @@ from ricecooker.utils.zip import create_predictable_zip
 ###########################################################
 
 CHANNEL_NAME = 'Example Wikipedia'         # Name of channel
-CHANNEL_SOURCE_ID = 'souschef-example-{{cookiecutter.github_username}}' # Channel's unique id
+CHANNEL_SOURCE_ID = 'souschef-example-{{cookiecutter.email}}' # Channel's unique id
 CHANNEL_DOMAIN = 'en.wikipedia.org'        # Who is providing the content
 CHANNEL_LANGUAGE = 'en'                    # Language of channel
 CHANNEL_DESCRIPTION = ''                   # Description of the channel (optional)

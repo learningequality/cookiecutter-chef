@@ -1,10 +1,10 @@
 {
   "full_name": "Learning Equality",
-  "email": "info@learningequality.org",
-  "github_username": "learningequality",
+  "email": "noreply@learningequality.org",
   "channel_name": "Channel",
-  "channel_domain": "{{ cookiecutter.github_username }}",
   "chef_template": ["Sushi Chef", "Sous Chef"],
   "project_slug": "sushi-chef-{{ cookiecutter.channel_name.lower().replace(' ', '-').replace('_', '-') }}",
-  "channel_language": "en"
+  "channel_language": "en",
+  "channel_domain": "learningequality.org",
+  "channel_source_id": "{{cookiecutter.project_slug}}-{{cookiecutter.channel_language}}"
 }

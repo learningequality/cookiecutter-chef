@@ -14,7 +14,7 @@ from le_utils.constants import licenses, exercises, content_kinds, file_formats,
 ################################################################################
 
 CHANNEL_NAME = "{{cookiecutter.channel_name}}"              # Name of channel
-CHANNEL_SOURCE_ID = "{{cookiecutter.project_slug}}-{{cookiecutter.channel_language}}" # Channel's unique id
+CHANNEL_SOURCE_ID = "{{channel_source_id}}"                 # Channel's unique id
 CHANNEL_DOMAIN = "{{cookiecutter.channel_domain}}"          # Who is providing the content
 CHANNEL_LANGUAGE = "{{cookiecutter.channel_language}}"      # Language of channel
 CHANNEL_DESCRIPTION = None                                  # Description of the channel (optional)
