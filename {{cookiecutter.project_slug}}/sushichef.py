@@ -1,22 +1,16 @@
 #!/usr/bin/env python
 import os
 import sys
-sys.path.append(os.getcwd()) # Handle relative imports
 from ricecooker.utils import downloader, html_writer
 from ricecooker.chefs import SushiChef
 from ricecooker.classes import nodes, files, questions, licenses
-from ricecooker.config import LOGGER                        # Use logger to print messages
+from ricecooker.config import LOGGER              # Use LOGGER to print messages
 from ricecooker.exceptions import raise_for_invalid_channel
 from le_utils.constants import licenses, exercises, content_kinds, file_formats, format_presets, languages
 
 
-""" Additional imports """
-###########################################################
-
-
-""" Run Constants"""
-###########################################################
-
+# Run constants
+################################################################################
 CHANNEL_NAME = "{{cookiecutter.channel_name}}"              # Name of channel
 CHANNEL_SOURCE_ID = "{{cookiecutter.channel_source_id}}"    # Channel's unique id
 CHANNEL_DOMAIN = "{{cookiecutter.channel_domain}}"          # Who is providing the content
@@ -24,46 +18,62 @@ CHANNEL_LANGUAGE = "{{cookiecutter.channel_language}}"      # Language of channe
 CHANNEL_DESCRIPTION = None                                  # Description of the channel (optional)
 CHANNEL_THUMBNAIL = None                                    # Local path or url to image file (optional)
 
+# Additional constants
+################################################################################
 
-""" Additional Constants """
-###########################################################
 
-""" The chef class that takes care of uploading channel to the content curation server. """
+
+# The chef subclass
+################################################################################
 class MyChef(SushiChef):
-
+    """
+    This class uploads the {{ cookiecutter.channel_name }} channel to Kolibri Studio.
+    Your command line script should call the `main` method as the entry point,
+    which performs the following steps:
+      - Parse command line arguments and options (run `./sushichef.py -h` for details)
+      - Call the `SushiChef.run` method which in turn calls `pre_run` (optional)
+        and then the ricecooker function `uploadchannel` which in turn calls this
+        class' `get_channel` method to get channel info, then `construct_channel`
+        to build the contentnode tree.
+    For more info, see https://github.com/learningequality/ricecooker/tree/master/docs
+    """
     channel_info = {                                   # Channel Metadata
         'CHANNEL_SOURCE_DOMAIN': CHANNEL_DOMAIN,       # Who is providing the content
         'CHANNEL_SOURCE_ID': CHANNEL_SOURCE_ID,        # Channel's unique id
         'CHANNEL_TITLE': CHANNEL_NAME,                 # Name of channel
         'CHANNEL_LANGUAGE': CHANNEL_LANGUAGE,          # Language of channel
-        'CHANNEL_THUMBNAIL': CHANNEL_THUMBNAIL,      # Local path or url to image file (optional)
-        'CHANNEL_DESCRIPTION': CHANNEL_DESCRIPTION,      # Description of the channel (optional)
+        'CHANNEL_THUMBNAIL': CHANNEL_THUMBNAIL,        # Local path or url to image file (optional)
+        'CHANNEL_DESCRIPTION': CHANNEL_DESCRIPTION,    # Description of the channel (optional)
     }
-
-
-    """ Main scraping method """
-    ###########################################################
+    # Your chef subclass can ovverdie/extend the following method:
+    # get_channel: to create ChannelNode manually instead of using channel_info
+    # pre_run: to perform preliminary tasks, e.g., crawling and scraping website
+    # __init__: if need to customize functionality or add command line arguments
 
     def construct_channel(self, *args, **kwargs):
-        """ construct_channel: Creates ChannelNode and build topic tree
-            Returns: ChannelNode
         """
-        channel = self.get_channel(*args, **kwargs)   # Creates ChannelNode from data in self.channel_info
+        Creates ChannelNode and build topic tree
+        Args:
+          - args: arguments passed in during upload_channel (currently None)
+          - kwargs: extra argumens and options not handled by `uploadchannel`.
+            For example, add the command line option   lang="fr"  and the string
+            "fr" will be passed along to `construct_channel` as kwargs['lang'].
+        Returns: ChannelNode
+        """
+        channel = self.get_channel(*args, **kwargs)  # Create ChannelNode from data in self.channel_info
 
-        # TODO: Replace line with scraping code
-        raise NotImplementedError("Scraping method not implemented")
+        # TODO: Replace next line with chef code
+        raise NotImplementedError("constuct_channel method not implemented yet...")
 
-        raise_for_invalid_channel(channel)            # Check for errors in channel construction
+        raise_for_invalid_channel(channel)  # Check for errors in channel construction
 
         return channel
 
 
-""" Helper Methods """
-###########################################################
 
-
-""" This code will run when the sushi chef is called from the command line. """
+# CLI
+################################################################################
 if __name__ == '__main__':
-
+    # This code runs when sushichef.py is called from the command line
     chef = MyChef()
     chef.main()

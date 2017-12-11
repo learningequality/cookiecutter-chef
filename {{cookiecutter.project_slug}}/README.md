@@ -5,9 +5,10 @@ little or no internet connectivity. Educational content is created and edited on
 which is a platform for organizing content to import from the Kolibri applications. The purpose
 of this project is to create a *chef*, or a program that scrapes a content source and puts it
 into a format that can be imported into Kolibri Studio. {% if cookiecutter.chef_template == 'Sous Chef' -%}This project will read a
-given source's content and parse and organize that content into a folder + csv structure,
-which will then be imported into Kolibri Studio. (example can be found under `examples` directory. {%- endif %}
-
+given source's content, parse it, and organize that the content files into folder and subfolders,
+with the metadata provided as CSV files, the whole thing inside a zip archive.
+The zip archive can then be imported into Kolibri Studio using a LineCook script.
+(examples souschef scripts can be in the `examples` directory. {%- endif %}
 
 
 ## Installation
@@ -34,30 +35,44 @@ which will then be imported into Kolibri Studio. (example can be found under `ex
 * Run `pip install -r requirements.txt` to install the required python libraries.
 
 
+
+
+## Usage
+
+TODO: Explain how to run the {{cookiecutter.channel_name}} chef
+
+      export SOMEVAR=someval
+      ./script.py -v --option2 --kwoard="val"
+
+
+
 ## Description
 
 {% if cookiecutter.chef_template == 'Sous Chef' -%}
 
-A sous chef is responsible for scraping content from a source and putting it into a folder
-and csv structure (see example `examples/Sample Channel.zip`)
+A sous chef script is responsible for scraping content from a source and putting
+it into a folder and csv structure (see `examples/Sample Channel.zip`).
 
-A sous chef skeleton script has been started for you, see [`souschef.py`](./souschef.py).
+A sous chef skeleton script has been started for you in [`souschef.py`](./souschef.py).
 
-Sous chef instructions can be found [here](https://github.com/learningequality/ricecooker/blob/master/docs/souschef.md)
+Sous chef docs can be found [here](https://github.com/learningequality/ricecooker/blob/master/docs/souschef.md).
 
-_For more examples, see `examples/openstax_souschef.py` (json) and `examples/wikipedia_souschef.py` (html)_
+_For more examples, see `examples/openstax_souschef.py` (json) and `examples/wikipedia_souschef.py` (html)._
 
 
 {% elif cookiecutter.chef_template == 'Sushi Chef' -%}
 
-A sushi chef is responsible for scraping content from a source and using the
-[Rice Cooker](https://github.com/learningequality/ricecooker) to upload a channel to Kolibri Studio.
+A sushi chef script is responsible for importing content into Kolibri Studio.
+The [Rice Cooker](https://github.com/learningequality/ricecooker) library provides
+all the necessary methods for uploading the channel content to Kolibri Studio,
+as well as helper functions and utilities.
 
 A sushi chef script has been started for you in `sushichef.py`.
 
-Sushi chef instructions can be found [here](https://github.com/learningequality/ricecooker/blob/master/README.md)
+Sushi chef docs can be found [here](https://github.com/learningequality/ricecooker/blob/master/README.md).
 
-_For more sushi chef examples, see `examples/openstax_sushichef.py` (json) and `examples/wikipedia_sushichef.py` (html)_
+_For more sushi chef examples, see `examples/openstax_sushichef.py` (json) and
+ `examples/wikipedia_sushichef.py` (html) and also the examples/ dir inside the ricecooker repo._
 
 
 {%- endif %}
@@ -65,21 +80,26 @@ _For more sushi chef examples, see `examples/openstax_sushichef.py` (json) and `
 
 ---
 
+
 ## Rubric
 
 _Please make sure your final chef matches the following standards._
 
+{% if cookiecutter.chef_template == 'Sous Chef' -%}
+#### SousChef Standards
+1. Does the folder structure in the channel archive match the expected topic tree?
+1. Are the files `Channel.csv` and `Content.csv` valid (no missing files, data formatted correctly, etc.)?
+{%- endif %}
+
 #### General Standards
-1. Does the resulting folder structure match the expected topic tree?
-1. Are the Channel.csv and Content.csv files valid (no missing files, data formatted correctly, etc.)?
 1. Does the code work (no infinite loops, exceptions thrown, etc.)?
-1. Are the source_ids determined consistently (not based on a changing url path, in same location every run, etc.)?
-1. Is there documentation on how to run it (including extra parameters to use)?
+1. Are the `source_id`s determined consistently (based on foreign database identifiers or permanent url paths)?
+1. Is there documentation on how to run the script (include command line parameters to use)?
 
 #### Coding Standards
 1. Are there no obvious runtime or memory inefficiencies in the code?
 1. Are the functions succinct?
-1. Are there comments where needed?
+1. Are clarifying comments provided where needed?
 1. Are the git commits easy to understand?
 1. Is there no unnecessary nested `if` or `for` loops?
 1. Are variables named descriptively (e.g. `path` vs `p`)?
