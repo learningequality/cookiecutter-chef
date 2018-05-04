@@ -6,7 +6,7 @@ from ricecooker.chefs import SushiChef
 from ricecooker.classes import nodes, files, questions, licenses
 from ricecooker.config import LOGGER              # Use LOGGER to print messages
 from ricecooker.exceptions import raise_for_invalid_channel
-from le_utils.constants import licenses, exercises, content_kinds, file_formats, format_presets, languages
+from le_utils.constants import exercises, content_kinds, file_formats, format_presets, languages
 
 
 # Run constants
