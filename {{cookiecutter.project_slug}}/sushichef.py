@@ -45,7 +45,7 @@ class MyChef(SushiChef):
         'CHANNEL_THUMBNAIL': CHANNEL_THUMBNAIL,        # Local path or url to image file (optional)
         'CHANNEL_DESCRIPTION': CHANNEL_DESCRIPTION,    # Description of the channel (optional)
     }
-    # Your chef subclass can ovverdie/extend the following method:
+    # Your chef subclass can override/extend the following method:
     # get_channel: to create ChannelNode manually instead of using channel_info
     # pre_run: to perform preliminary tasks, e.g., crawling and scraping website
     # __init__: if need to customize functionality or add command line arguments
