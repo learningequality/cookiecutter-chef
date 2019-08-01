@@ -1,3 +1,13 @@
+# Ricecooker generated files
+storage/*
+.ricecookerfilecache/*
+restore/*
+ghostdriver.log
+.webcache/*
+chefdata/tmp
+chefdata/zipfiles
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -65,10 +75,3 @@ target/
 
 # Jupyter Notebook Checkpoints
 .ipynb_checkpoints
-
-# Ricecooker generated files
-storage/*
-.ricecookerfilecache/*
-restore/*
-ghostdriver.log
-.webcache/*
