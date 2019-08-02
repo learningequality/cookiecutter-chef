@@ -1,111 +1,160 @@
 # {{cookiecutter.channel_name}} Chef
-
-Kolibri is an open source educational platform to distribute content to areas with
-little or no internet connectivity. Educational content is created and edited on [Kolibri Studio](https://studio.learningequality.org),
-which is a platform for organizing content to import from the Kolibri applications. The purpose
-of this project is to create a *chef*, or a program that scrapes a content source and puts it
-into a format that can be imported into Kolibri Studio. {% if cookiecutter.chef_template == 'Sous Chef' -%}This project will read a
-given source's content, parse it, and organize that the content files into folder and subfolders,
-with the metadata provided as CSV files, the whole thing inside a zip archive.
-The zip archive can then be imported into Kolibri Studio using a LineCook script.
-(examples souschef scripts can be in the `examples` directory. {%- endif %}
+This repository contains the code for creating the {{cookiecutter.channel_name}}
+channel in Kolibri. The script `sushichef.py` uploads the content to Kolibri Studio,
+so that later the content can be imported into Kolibri and made available offline.
 
 
 ## Installation
-
-* Install [Python 3](https://www.python.org/downloads/) if you don't have it already.
-
-* Install [pip](https://pypi.python.org/pypi/pip) if you don't have it already.
-
-* Create a Python virtual environment for this project (optional, but recommended):
+1. Install the system prerequisites `ffmpeg` and `imagemagick` by following the
+   [prerequisite install instructions](https://ricecooker.readthedocs.io/en/latest/installation.html#software-prerequisites).
+2. Install [Python 3](https://www.python.org/downloads/) if you don't have it already.
+3. Make sure you also have `pip` installed by running the command `pip --help`
+   in a terminal, and if missing [install it](https://pypi.python.org/pypi/pip).
+4. Create a Python virtual environment for this project:
    * Install the virtualenv package: `pip install virtualenv`
-   * The next steps depends if you're using UNIX (Mac/Linux) or Windows:
-      * For UNIX systems:
+   * The next steps depends if you're using UNIX or Windows:
+      * For UNIX systems (Linux and Mac):
          * Create a virtual env called `venv` in the current directory using the
            following command: `virtualenv -p python3  venv`
          * Activate the virtualenv called `venv` by running: `source venv/bin/activate`.
-           Your command prompt will change to indicate you're working inside `venv`.
+           Your command prompt should change and show the prefix `(venv)` to
+           indicate you're now working inside `venv`.
+         * **Checkpoint**: Try running `which python` and confirm the Python in
+           is use the one from the virtual env (e.g. `venv/bin/python`) and not
+           the system Python. Check also `which pip` is the one from the virtualenv.
       * For Windows systems:
          * Create a virtual env called `venv` in the current directory using the
-           following command: `virtualenv -p C:/Python36/python.exe venv`.
-           You may need to adjust the `-p` argument depending on where your version
-           of Python is located.
-         * Activate the virtualenv called `venv` by running: `.\venv\Scripts\activate`
+           following command: `virtualenv venv`.
+         * Activate the virtualenv called `venv` by running `.\venv\Scripts\activate`
+         * **Checkpoint**: Try running `python --version` and confirm the Python
+           version that is running is the same as the one you downloaded in step 2.
+5. Run `pip install -r requirements.txt` to install the required Python libraries
+   inside the virtual env.
 
-* Run `pip install -r requirements.txt` to install the required python libraries.
 
-
+## Credentials
+To upload content using a `ricecooker` script, you must first obtain your 
+[Studio user authentication token](https://studio.learningequality.org/settings/tokens).
+Save this token somewhere safe on your computer and treat it like a password:
+do not share it with anyone, don't send it in emails, and don't save it in git.
 
 
 ## Usage
+To run the {{cookiecutter.channel_name}} content import script you can call the
+Python script `sushichef.py` as follows
 
-TODO: Explain how to run the {{cookiecutter.channel_name}} chef
+    python sushichef.py -v --token=<YOURTOKENHERE>
 
-      export SOMEVAR=someval
-      ./script.py -v --option2 --kwoard="val"
-
-
-
-## Description
-
-{% if cookiecutter.chef_template == 'Sous Chef' -%}
-
-A sous chef script is responsible for scraping content from a source and putting
-it into a folder and csv structure (see `examples/Sample Channel.zip`).
-
-A sous chef skeleton script has been started for you in [`souschef.py`](./souschef.py).
-
-Sous chef docs can be found [here](https://github.com/learningequality/ricecooker/blob/master/docs/souschef.md).
-
-_For more examples, see `examples/openstax_souschef.py` (json) and `examples/wikipedia_souschef.py` (html)._
-
-
-{% elif cookiecutter.chef_template == 'Sushi Chef' -%}
-
-A sushi chef script is responsible for importing content into Kolibri Studio.
-The [Rice Cooker](https://github.com/learningequality/ricecooker) library provides
-all the necessary methods for uploading the channel content to Kolibri Studio,
-as well as helper functions and utilities.
-
-A sushi chef script has been started for you in `sushichef.py`.
-
-Sushi chef docs can be found [here](https://github.com/learningequality/ricecooker/blob/master/README.md).
-
-_For more sushi chef examples, see `examples/openstax_sushichef.py` (json) and
- `examples/wikipedia_sushichef.py` (html) and also the examples/ dir inside the ricecooker repo._
-
-
-{%- endif %}
+This will run the chef in verbose mode using the Studio token credentials provided.
+For more details about the various command line arguments and options, consult
+[the docs](https://ricecooker.readthedocs.io/en/latest/chefops.html#ricecooker-cli).
 
 
 ---
 
+## About
+A sushi chef script is responsible for importing content into Kolibri Studio.
+The [ricecooker](https://github.com/learningequality/ricecooker) library provides
+all helper methods necessary for uploading the content to Kolibri Studio.
+The ricecooker docs can be found [here](https://ricecooker.readthedocs.io/en/latest/).
 
-## Rubric
+This repo includes two sample chef scripts in `examples/openstax_sushichef.py` (json)
+and `examples/wikipedia_sushichef.py` (html). To find more code examples, search
+for [`sushi-chef-*` on github]https://github.com/search?q=org%3Alearningequality+sushi-chef-%2A)
+to see all the sushi chef scripts. They are all example of how to extract,
+transform, and upload content from various sources of openly licensed content.
 
-_Please make sure your final chef matches the following standards._
 
-{% if cookiecutter.chef_template == 'Sous Chef' -%}
-#### SousChef Standards
-1. Does the folder structure in the channel archive match the expected topic tree?
-1. Are the files `Channel.csv` and `Content.csv` valid (no missing files, data formatted correctly, etc.)?
-{%- endif %}
+## Instructions and channel rubric
+A sushi chef script has been created for you in `sushichef.py` to help you get
+started on the import of the {{cookiecutter.channel_name}} content.
 
-#### General Standards
-1. Does the code work (no infinite loops, exceptions thrown, etc.)?
-1. Are the `source_id`s determined consistently (based on foreign database identifiers or permanent url paths)?
-1. Is there documentation on how to run the script (include command line parameters to use)?
+1. Start by looking at the **channel spec** that describes the target channel structure,
+   licensing information, and tips about content transformations that might be necessary.
+2. Add the code necessary to create this channel by modifying the `construct_channel`
+   method of the chef class defined in `sushichef.py`.
 
-#### Coding Standards
-1. Are there no obvious runtime or memory inefficiencies in the code?
-1. Are the functions succinct?
-1. Are clarifying comments provided where needed?
-1. Are the git commits easy to understand?
-1. Is there no unnecessary nested `if` or `for` loops?
-1. Are variables named descriptively (e.g. `path` vs `p`)?
+Use the following rubric as a checklist to know when your sushi chef script is done:
 
-#### Python Standards
-1. Is the code compatible with Python 3?
-1. Does the code use common standard library functions where needed?
-1. Does the code use common python idioms where needed (with/open, try/except, etc.)?
+### Main checks
+1. Does the channel correspond to the spec provided?
+2. Does the content render as expected when viewed in Kolibri?
+
+### Logistic checks
+1. Is the channel uploaded to Studio and PUBLISH-ed?
+2. Is the channel imported to a demo server where it can be previewed?
+3. Is the information about the channel token, the studio URL, and demo server URL
+   on notion card up to date? See the [Studio Channels table](https://www.notion.so/761249f8782c48289780d6693431d900).
+   If a card for your channel yet doesn't exist yet, you can create one using
+   the `[+ New]` button at the bottom of the table.
+
+### Metadata checks
+1. Do all nodes have appropriate titles?
+2. Do all nodes have appropriate descriptions (when available in the source)?
+3. Is the correct [language code](https://github.com/learningequality/le-utils/blob/master/le_utils/resources/languagelookup.json)
+   set on all nodes and files?
+4. Is the `license` field set to the correct value for all nodes?
+5. Is the `source_id` field set consistently for all content nodes?
+   Use unique identifiers based on the source website or permanent url paths.
+
+### Code standards
+1. Does the section `Usage` in this README contain all the required information
+   for another developer to run the script?
+   Document and extra credentials, env vars, and options needed to run the script.
+2. Is the Python code readable and succinct?
+3. Are clarifying comments provided where needed?
+
+
+## Kolibri content development workflow
+Running the sushichef script is only one of the steps in the Kolibri content
+development workflow:
+
+             ricecooker     studio       kolibri demo server
+    SPEC-->--CHEF----->-----PUBLISH--->--IMPORT using token and REVIEW
+    (1)      (2)            (3)          (4)                    (5)
+      \______/                                                 /
+       \______________________________________________________/
+
+It is your responsibility as the chef author to take this channel all the way
+through this workflow and make sure that the final channel works in Kolibri.
+
+Notes on specific steps:
+  - `(1)`: the spec for the channel describes how the channel should be organized
+  - `(2)`: your main task as a chef author is to implement all the extraction
+    and content transformation described in the spec. If you run into any kind
+    of difficulties with this step post a question in the LE slack channel
+    `#sushi-chefs` and someone from the content team will be able assist you.
+    For example, "Hello @here I'm having trouble with the {{cookiecutter.channel_name}} chef
+    because X and Y cannot be organized according to the spec because Z."
+    For complicated or very large channels the spec may go through multiple iterations.
+  - `(3)`: once the channel is on Studio you can preview the structure there
+    and create or update a notion card with the channel information.
+    The next step is to export the channel in the format necessary for use in
+    Kolibri using the `PUBLISH` button on Studio. The PUBLISH action exports
+    all the channel metadata to a sqlite3 DB file
+    `https://studio.learningequality.org/content/databases/{channel_id}.sqlite3`
+    the first time a channel is PUBLISH-ed a secret token is generated that can
+    be used to import the channel in Kolibri. Note down the channel's token.
+  - `(4)`: the next step is to import your channel into a Kolibri instance. You
+    can use Kolibri installed on your local machine or an online demo server.
+    Admin (`devowner`) credentials for the demo server will be provided for you
+    so that you can import and update the channel every time you push a new version.
+    Follow these steps to import your channel `Device` > `IMPORT` > `ONLINE` >
+    `Try adding a token`, add the channel token, select all nodes > `IMPORT`.
+  - `(5)`: You can now go to the Kolibri Learn tab and preview your channel to
+    see it the way learners will see it. Take the time to click around and browse
+    the content to make sure everything works as expected. Update the notion card
+    and leave a comment. For example "First draft of channel uploaded to demo server."
+    This would be a good time to ask a member of the LE content team to review
+    the channel. You can do this using the `@Person Name` in your notion comment.
+    Consult the content source notion card to know who the relevant people to tag.
+    For example, you can @-comment the `Library` person on the card to ask them
+    to review the channel—be sure to specify the channel's "level of readiness"
+    in your comment, e.g., if it's a draft version for initial feedback, or
+    the near-final, spec-compliant version ready for detailed review and QA.
+    For async technical questions tag the `SushOps` person on the card or post
+    your question in the `#sushi-chefs` channel. For example, "I downloaded this
+    html and js content, but it doesn't render right in Kolibri because of the
+    iframe sandboxing." or "Does anyone have sample code for extracting content
+    X from a shared drive link Y of type Z?".
 
