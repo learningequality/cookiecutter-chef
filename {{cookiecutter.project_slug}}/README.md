@@ -1,7 +1,7 @@
 # {{cookiecutter.channel_name}} Chef
-This repository contains the code for creating the {{cookiecutter.channel_name}}
-channel in Kolibri. The script `sushichef.py` uploads the content to Kolibri Studio,
-so that later the content can be imported into Kolibri and made available offline.
+The script `sushichef.py` downloads the {{cookiecutter.channel_name}} content,
+converts it for use in Kolibri, then uploads it into Kolibri Studio so that later
+the content can be imported into Kolibri and used offline.
 
 
 ## Installation
@@ -12,7 +12,7 @@ so that later the content can be imported into Kolibri and made available offlin
    in a terminal, and if missing [install it](https://pypi.python.org/pypi/pip).
 4. Create a Python virtual environment for this project:
    * Install the virtualenv package: `pip install virtualenv`
-   * The next steps depends if you're using UNIX or Windows:
+   * The next steps depends on whether you're using UNIX or Windows:
       * For UNIX systems (Linux and Mac):
          * Create a virtual env called `venv` in the current directory using the
            following command: `virtualenv -p python3  venv`
@@ -107,54 +107,19 @@ Use the following rubric as a checklist to know when your sushi chef script is d
 
 ## Kolibri content development workflow
 Running the sushichef script is only one of the steps in the Kolibri content
-development workflow:
+development workflow. Here is the full picture:
 
-             ricecooker     studio       kolibri demo server
-    SPEC-->--CHEF----->-----PUBLISH--->--IMPORT using token and REVIEW
-    (1)      (2)            (3)          (4)                    (5)
-      \______/                                                 /
-       \______________________________________________________/
+```
+                ricecooker      studio         kolibri demo server
+  SPEC----->----CHEF----->------PUBLISH---->---IMPORT using token and REVIEW
+   \  \         /                                                    /
+    \  `clarif.´                                                    /
+     \                                                             /
+      `---------------- spec compliance checks -------------------´
+```
 
-It is your responsibility as the chef author to take this channel all the way
+It is your responsibility as the chef author to take this content channel all the way
 through this workflow and make sure that the final channel works in Kolibri.
-
-Notes on specific steps:
-  - `(1)`: the spec for the channel describes how the channel should be organized
-  - `(2)`: your main task as a chef author is to implement all the extraction
-    and content transformation described in the spec. If you run into any kind
-    of difficulties with this step post a question in the LE slack channel
-    `#sushi-chefs` and someone from the content team will be able assist you.
-    For example, "Hello @here I'm having trouble with the {{cookiecutter.channel_name}} chef
-    because X and Y cannot be organized according to the spec because Z."
-    For complicated or very large channels the spec may go through multiple iterations.
-  - `(3)`: once the channel is on Studio you can preview the structure there
-    and create or update a notion card with the channel information.
-    The next step is to export the channel in the format necessary for use in
-    Kolibri using the `PUBLISH` button on Studio. The PUBLISH action exports
-    all the channel metadata to a sqlite3 DB file
-    `https://studio.learningequality.org/content/databases/{channel_id}.sqlite3`
-    the first time a channel is PUBLISH-ed a secret token is generated that can
-    be used to import the channel in Kolibri. Note down the channel's token.
-  - `(4)`: the next step is to import your channel into a Kolibri instance. You
-    can use Kolibri installed on your local machine or an online demo server.
-    Admin (`devowner`) credentials for the demo server will be provided for you
-    so that you can import and update the channel every time you push a new version.
-    Follow these steps to import your channel `Device` > `IMPORT` > `ONLINE` >
-    `Try adding a token`, add the channel token, select all nodes > `IMPORT`.
-  - `(5)`: You can now go to the Kolibri Learn tab and preview your channel to
-    see it the way learners will see it. Take the time to click around and browse
-    the content to make sure everything works as expected. Update the notion card
-    and leave a comment. For example "First draft of channel uploaded to demo server."
-    This would be a good time to ask a member of the LE content team to review
-    the channel. You can do this using the `@Person Name` in your notion comment.
-    Consult the content source notion card to know who the relevant people to tag.
-    For example, you can @-comment the `Library` person on the card to ask them
-    to review the channel—be sure to specify the channel's "level of readiness"
-    in your comment, e.g., if it's a draft version for initial feedback, or
-    the near-final, spec-compliant version ready for detailed review and QA.
-    For async technical questions tag the `SushOps` person on the card or post
-    your question in the `#sushi-chefs` channel. For example, "I downloaded this
-    html and js content, but it doesn't render right in Kolibri because of the
-    iframe sandboxing." or "Does anyone have sample code for extracting content
-    X from a shared drive link Y of type Z?".
-
+For details about each step in the workflow see the section
+[Kolibri content workflows](https://ricecooker.readthedocs.io/en/latest/platform/content_workflows.html)
+in the docs.
