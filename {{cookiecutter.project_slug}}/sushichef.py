@@ -54,9 +54,9 @@ class MyChef(SushiChef):
         """
         Creates ChannelNode and build topic tree
         Args:
-          - args: arguments passed in during upload_channel (currently None)
-          - kwargs: extra argumens and options not handled by `uploadchannel`.
-            For example, add the command line option   lang="fr"  and the string
+          - args: arguments passed in on the command line
+          - kwargs: extra options passed in as key="value" pairs on the command line
+            For example, add the command line option   lang="fr"  and the value
             "fr" will be passed along to `construct_channel` as kwargs['lang'].
         Returns: ChannelNode
         """

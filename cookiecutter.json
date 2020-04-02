@@ -2,7 +2,7 @@
   "full_name": "Learning Equality",
   "email": "noreply@learningequality.org",
   "channel_name": "Channel",
-  "chef_template": ["Sushi Chef", "Sous Chef"],
+  "chef_template": ["Sushi Chef"],
   "project_slug": "sushi-chef-{{ cookiecutter.channel_name.lower().replace(' ', '-').replace('_', '-') }}",
   "channel_language": "en",
   "channel_domain": "learningequality.org",
